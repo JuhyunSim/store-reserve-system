@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: store
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      username: store
+      password: store
+    url: jdbc:mysql://localhost:3306/store
+
