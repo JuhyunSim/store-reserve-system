@@ -1,15 +1,15 @@
 package com.zerobase.partner.service;
 
+import com.zerobase.partner.domain.repository.PartnerRepository;
 import com.zerobase.partner.domain.SignUpForm;
 import com.zerobase.partner.domain.dto.PartnerDto;
 import com.zerobase.partner.domain.model.PartnerEntity;
-import com.zerobase.partner.domain.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PartnerService {
+public class SignUpService {
 
     private final PartnerRepository partnerRepository;
 
