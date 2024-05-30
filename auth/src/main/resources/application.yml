@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    include: partner
+
+  main:
+    allow-circular-references: true
