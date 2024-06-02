@@ -1,11 +1,11 @@
 package com.zerobase.partner.application;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.zerobase.partner.domain.SignUpForm;
 import com.zerobase.partner.domain.dto.PartnerDto;
-import com.zerobase.partner.domain.model.PartnerEntity;
-import com.zerobase.partner.service.PartnerService;
+import com.zerobase.partner.service.SignUpService;
 import com.zerobase.partner.service.mailgun.MailgunApi;
+import com.zerobase.partner.domain.SignUpForm;
+import com.zerobase.partner.domain.model.PartnerEntity;
 import com.zerobase.partner.service.mailgun.SendingMailForm;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 class SignUpApplicationTest {
 
     @Mock
-    private PartnerService partnerService;
+    private SignUpService signUpService;
 
     @Mock
     private MailgunApi mailgunApi;
@@ -60,8 +60,8 @@ class SignUpApplicationTest {
                 .verifyExpiredAt(LocalDateTime.now().plusDays(1))
                 .build();
 
-        given(partnerService.isValidEmail(any())).willReturn(false);
-        given(partnerService.savePartnerEntity(any())).willReturn(partnerEntity.from());
+        given(signUpService.isValidEmail(any())).willReturn(false);
+        given(signUpService.savePartnerEntity(any())).willReturn(PartnerDto.from(partnerEntity));
 
         //when
         PartnerDto partnerDto = signUpApplication.signUp(signUpForm);
@@ -93,7 +93,7 @@ class SignUpApplicationTest {
                 .name("Test User")
                 .build();
 
-        given(partnerService.isValidEmail(any())).willReturn(true);
+        given(signUpService.isValidEmail(any())).willReturn(true);
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class,
@@ -130,8 +130,8 @@ class SignUpApplicationTest {
                 .verify(true)
                 .build();
 
-        given(partnerService.findPartnerByEmail(anyString())).willReturn(partnerEntity);
-        given(partnerService.savePartnerEntity(any())).willReturn(updatedPartnerEntity.from());
+        given(signUpService.findPartnerByEmail(anyString())).willReturn(partnerEntity);
+        given(signUpService.savePartnerEntity(any())).willReturn(PartnerDto.from(updatedPartnerEntity));
 
         //when
         PartnerDto partnerDto = signUpApplication.verifySignUp(email);
@@ -162,7 +162,7 @@ class SignUpApplicationTest {
                 .verifyExpiredAt(LocalDateTime.now().minusMinutes(1))
                 .build();
 
-        given(partnerService.findPartnerByEmail(anyString())).willReturn(partnerEntity);
+        given(signUpService.findPartnerByEmail(anyString())).willReturn(partnerEntity);
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class,
