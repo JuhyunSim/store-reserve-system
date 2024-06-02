@@ -1,5 +1,6 @@
-package com.zerobase.partner.config;
+package com.zerobase.partner.security.config;
 
+import com.zerobase.partner.config.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
