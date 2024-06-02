@@ -41,7 +41,7 @@ public class SignUpApplication {
         mailgunApi.sendVerifyEmail(sendingMailForm);
 
         //partner 데이터 저장
-        PartnerEntity partnerEntity = signUpForm.from();
+        PartnerEntity partnerEntity = PartnerEntity.from(signUpForm);
         partnerEntity.setVerificationCode(code);
         partnerEntity.setVerifyExpiredAt(LocalDateTime.now().plusDays(1));
         return signUpService.savePartnerEntity(partnerEntity);

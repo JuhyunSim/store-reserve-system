@@ -61,7 +61,7 @@ class SignUpApplicationTest {
                 .build();
 
         given(signUpService.isValidEmail(any())).willReturn(false);
-        given(signUpService.savePartnerEntity(any())).willReturn(partnerEntity.from());
+        given(signUpService.savePartnerEntity(any())).willReturn(PartnerDto.from(partnerEntity));
 
         //when
         PartnerDto partnerDto = signUpApplication.signUp(signUpForm);
@@ -131,7 +131,7 @@ class SignUpApplicationTest {
                 .build();
 
         given(signUpService.findPartnerByEmail(anyString())).willReturn(partnerEntity);
-        given(signUpService.savePartnerEntity(any())).willReturn(updatedPartnerEntity.from());
+        given(signUpService.savePartnerEntity(any())).willReturn(PartnerDto.from(updatedPartnerEntity));
 
         //when
         PartnerDto partnerDto = signUpApplication.verifySignUp(email);

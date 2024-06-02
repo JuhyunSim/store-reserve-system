@@ -1,4 +1,4 @@
-package com.zerobase.auth.encrypt;
+package com.zerobase.partner.security.encrypt;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -20,12 +20,13 @@ public class Aes256Utils {
         }
     }
 
-    private static final IvParameterSpec ivParameterSpec = generateIv();
+    private final static IvParameterSpec ivParameterSpec = generateIv();
 
     public static String encrypt(String input)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
+
 
         Cipher cipher = Cipher.getInstance(alg);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
@@ -48,7 +49,7 @@ public class Aes256Utils {
 
 
     private static SecretKey generateKey(int n) throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(alg);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(n);
         SecretKey key = keyGenerator.generateKey();
         return key;

@@ -1,14 +1,15 @@
 package com.zerobase.partner.domain.model;
 
-import com.zerobase.partner.domain.dto.PartnerDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.zerobase.partner.domain.SignUpForm;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.AuditOverride;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,9 +18,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @AuditOverride
-public class PartnerEntity extends BaseEntity {
+public class PartnerEntity extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "partner_id")
     private Long id;
 
     private String email;
@@ -33,18 +35,43 @@ public class PartnerEntity extends BaseEntity {
     private boolean verify;
 
 
-    public PartnerDto from() {
-        return PartnerDto.builder()
-                .email(this.email)
-                .password("******")
-                .name(this.name)
-                .phone(this.phone)
-                .registerNumber(this.registerNumber)
-                .verifyExpiredAt(this.verifyExpiredAt)
-                .verificationCode(this.verificationCode)
-                .verify(this.verify)
-                .createdAt(this.getCreatedAt())
-                .lastModifiedAt(this.getLastModifiedAt())
+    public static PartnerEntity from(SignUpForm signUpForm) {
+        return PartnerEntity.builder()
+                .email(signUpForm.getEmail())
+                .password(signUpForm.getPassword())
+                .name(signUpForm.getName())
+                .phone(signUpForm.getPhone())
+                .registerNumber(signUpForm.getRegisterNumber())
                 .build();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

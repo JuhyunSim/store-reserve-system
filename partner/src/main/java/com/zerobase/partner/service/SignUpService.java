@@ -18,7 +18,7 @@ public class SignUpService {
     }
 
     public PartnerDto savePartnerEntity(PartnerEntity partnerEntity) {
-        return partnerRepository.save(partnerEntity).from();
+        return PartnerDto.from(partnerRepository.save(partnerEntity));
     }
 
     public PartnerEntity findPartnerByEmail(String email) {
