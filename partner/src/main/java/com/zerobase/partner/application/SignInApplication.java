@@ -21,7 +21,7 @@ public class SignInApplication {
     private final SignInService signInService;
     private final JwtAuthProvider jwtAuthProvider;
 
-    public String signIn(SignInForm signInForm)
+    public String signInPartner(SignInForm signInForm)
             throws InvalidAlgorithmParameterException,
             NoSuchPaddingException,
             IllegalBlockSizeException,
@@ -41,5 +41,6 @@ public class SignInApplication {
                 partnerEntity.getEmail(),
                 partnerEntity.getId(),
                 UserType.PARTNER);
+
     }
 }

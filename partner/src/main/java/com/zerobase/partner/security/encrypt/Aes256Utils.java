@@ -1,47 +1,54 @@
 package com.zerobase.partner.security.encrypt;
 
+import io.jsonwebtoken.io.Decoders;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+@Slf4j
 public class Aes256Utils {
-    public static String alg = "AES/CBC/PKCS5Padding";
-    private static SecretKey secretKey;
+    public static final String alg = "AES/CBC/PKCS5Padding";
 
-    static {
-        try {
-            secretKey = generateKey(256);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+    private SecretKey getSigningKey() {
+        String secretKey = "YWJjZGVmZ2hpamFiY2RlZmdoaWphYmNkZWZnaGlqMTI=";
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return new SecretKeySpec(keyBytes, "AES");
     }
 
     private final static IvParameterSpec ivParameterSpec = generateIv();
 
-    public static String encrypt(String input)
+    public String encrypt(String input)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
 
 
         Cipher cipher = Cipher.getInstance(alg);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
+        log.info("encrypt ivParameterSpec: {}", ivParameterSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, getSigningKey(), ivParameterSpec);
         byte[] cipherText = cipher.doFinal(input.getBytes());
+        log.info ("encrpyted cipherText: {}", Base64.getEncoder().encodeToString(cipherText));
         return Base64.getEncoder()
                 .encodeToString(cipherText);
     }
 
-    public static String decrypt(String cipherText)
+    public String decrypt(String cipherText)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
 
         Cipher cipher = Cipher.getInstance(alg);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
+        log.info("decrypt cipherText: {}", cipherText);
+        log.info("decrypt secretKey: {}", getSigningKey());
+        log.info("decrypt ivParameterSpec: {}", ivParameterSpec);
+        cipher.init(Cipher.DECRYPT_MODE, getSigningKey(), ivParameterSpec);
         byte[] plainText = cipher.doFinal(Base64.getDecoder()
                 .decode(cipherText));
         return new String(plainText);

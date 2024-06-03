@@ -1,4 +1,6 @@
 rootProject.name = 'store'
 include 'partner'
 include 'auth'
+include 'customer'
+include 'customer'
 
