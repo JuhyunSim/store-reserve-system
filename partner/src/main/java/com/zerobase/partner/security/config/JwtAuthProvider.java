@@ -9,6 +9,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,8 +31,12 @@ import java.util.Date;
 public class JwtAuthProvider {
 
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
-    private final long tokenValidTime = 1000L * 60 * 30;
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthProvider.class);
+    private final long tokenValidTime = 1000L * 60 * 60;
+
     private final PartnerService partnerService;
+
+    Aes256Utils aes256Utils = new Aes256Utils();
 
     private SecretKey getSignKey() {
         byte[] keyBytes= Decoders.BASE64.decode(SECRET);
@@ -50,13 +56,18 @@ public class JwtAuthProvider {
             InvalidKeyException {
         Claims claims = Jwts.claims()
                 .add("roles", userType)
-                .subject(Aes256Utils.encrypt(email))
-                .id(Aes256Utils.encrypt(id.toString())).build();
+                .subject(aes256Utils.encrypt(email))
+                .id(aes256Utils.encrypt(id.toString())).build();
+
+        Date now = new Date();
+        Date expiresAt = new Date(now.getTime() + tokenValidTime);
+
+        log.info("expires at : {}", expiresAt);
 
         return Jwts.builder()
                 .claims(claims)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + tokenValidTime)) // 토큰 유효 기간 30분
+                .issuedAt(now)
+                .expiration(expiresAt) // 토큰 유효 기간 1시간
                 .signWith(getSignKey())
                 .compact();
     }
@@ -72,13 +83,14 @@ public class JwtAuthProvider {
             NoSuchAlgorithmException,
             BadPaddingException,
             InvalidKeyException {
+        log.info("Jwt : {}", jwt);
         UserDetails userDetails
                 = this.partnerService.loadUserByUsername(this.getEmail(jwt));
         return new UsernamePasswordAuthenticationToken(userDetails,
                 "", userDetails.getAuthorities());
     }
 
-    //token에 username 확인
+    //token에 email 확인
     public String getEmail(String token)
             throws InvalidAlgorithmParameterException,
             NoSuchPaddingException,
@@ -86,7 +98,8 @@ public class JwtAuthProvider {
             NoSuchAlgorithmException,
             BadPaddingException,
             InvalidKeyException {
-        return Aes256Utils.decrypt(this.parseClaims(token).getSubject());
+        log.info("cipher text : {}", this.parseClaims(token).getSubject());
+        return aes256Utils.decrypt(this.parseClaims(token).getSubject());
     }
 
     //token에 id 확인
@@ -97,7 +110,8 @@ public class JwtAuthProvider {
             NoSuchAlgorithmException,
             BadPaddingException,
             InvalidKeyException {
-        return Long.valueOf(Aes256Utils.decrypt(this.parseClaims(token).getId()));
+        return Long.valueOf(aes256Utils.decrypt(
+                this.parseClaims(token).getId()));
     }
 
 
@@ -107,8 +121,13 @@ public class JwtAuthProvider {
             return false;
         }
 
-        var claims = this.parseClaims(token);
-        return !claims.getExpiration().before(new Date());
+        log.info("Validate token: {}", token);
+
+
+            Claims claims = this.parseClaims(token);
+            log.info("expiration: {}", claims.getExpiration());
+            log.info("expiration result: {}", !claims.getExpiration().before(new Date()));
+            return !claims.getExpiration().before(new Date());
     }
 
     private Claims parseClaims(String token) {
