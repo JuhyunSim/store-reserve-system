@@ -1,11 +1,14 @@
 spring:
   application:
     name: store
+  jwt:
+    secret: emVyb2Jhc2Utc3ByaW5nLWJvb3QtcHJvamVjdC1kaXZpZGVuZAo=
 
   jpa:
     generate-ddl: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+
     properties:
       hibernate:
         ejb:
