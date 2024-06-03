@@ -1,6 +1,7 @@
 package com.zerobase.partner.domain.dto;
 
 import com.zerobase.partner.domain.model.PartnerEntity;
+import com.zerobase.partner.security.common.UserType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class PartnerDto {
     private String registerNumber;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
+    private UserType userType;
 
     private LocalDateTime verifyExpiredAt;
     private String verificationCode;
@@ -34,6 +36,7 @@ public class PartnerDto {
                 .registerNumber(partnerEntity.getRegisterNumber())
                 .createdAt(partnerEntity.getCreatedAt())
                 .lastModifiedAt(partnerEntity.getLastModifiedAt())
+                .userType(partnerEntity.getUserType())
                 .build();
     }
 }
