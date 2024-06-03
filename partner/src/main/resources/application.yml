@@ -8,6 +8,8 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+        ejb:
+          interceptor: org.hibernate.envers.event.spi.EnversIntegrator
         dialect: org.hibernate.dialect.MySQL8Dialect
 
   datasource:
@@ -16,4 +18,3 @@ spring:
       username: store
       password: store
     url: jdbc:mysql://localhost:3306/store
-

@@ -1,8 +1,8 @@
-package com.zerobase.partner.controller;
+package com.zerobase.partner.controller.partner;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.zerobase.partner.application.SignUpApplication;
 import com.zerobase.partner.domain.SignUpForm;
+import com.zerobase.partner.application.SignUpApplication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class SignUpController {
         return ResponseEntity.ok(signUpApplication.signUp(signUpForm));
     }
 
-    @PutMapping("/partner/verify/")
+    @PutMapping("/partner/verify")
     public ResponseEntity<?> verify(@RequestParam String email,
                                     @RequestParam String code
     ) {

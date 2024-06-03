@@ -4,7 +4,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.zerobase.partner.domain.SignUpForm;
 import com.zerobase.partner.domain.dto.PartnerDto;
 import com.zerobase.partner.domain.model.PartnerEntity;
-import com.zerobase.partner.service.PartnerService;
+import com.zerobase.partner.service.SignUpService;
 import com.zerobase.partner.service.mailgun.MailgunApi;
 import com.zerobase.partner.service.mailgun.SendingMailForm;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class SignUpApplication {
 
-    private final PartnerService partnerService;
+    private final SignUpService signUpService;
     private final MailgunApi mailgunApi;
 
     public PartnerDto signUp(SignUpForm signUpForm) throws UnirestException {
         //사용 가능한 이메일 여부 확인
-        if (partnerService.isValidEmail(signUpForm)) {
+        if (signUpService.isValidEmail(signUpForm)) {
             throw new RuntimeException("이미 등록된 회원입니다.");
         }
 
@@ -41,21 +41,21 @@ public class SignUpApplication {
         mailgunApi.sendVerifyEmail(sendingMailForm);
 
         //partner 데이터 저장
-        PartnerEntity partnerEntity = signUpForm.from();
+        PartnerEntity partnerEntity = PartnerEntity.from(signUpForm);
         partnerEntity.setVerificationCode(code);
         partnerEntity.setVerifyExpiredAt(LocalDateTime.now().plusDays(1));
-        return partnerService.savePartnerEntity(partnerEntity);
+        return signUpService.savePartnerEntity(partnerEntity);
     }
 
     public PartnerDto verifySignUp(String email) {
-        PartnerEntity partnerEntity = partnerService.findPartnerByEmail(email);
+        PartnerEntity partnerEntity = signUpService.findPartnerByEmail(email);
 
         if (partnerEntity.getVerifyExpiredAt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("인증기간이 만료되었습니다.");
         }
 
         partnerEntity.setVerify(true);
-        return partnerService.savePartnerEntity(partnerEntity);
+        return signUpService.savePartnerEntity(partnerEntity);
     }
 
     private String generateRandomCode() {

@@ -1,4 +1,4 @@
-package com.zerobase.auth.common;
+package com.zerobase.partner.security.common;
 
 import lombok.*;
 
