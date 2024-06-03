@@ -24,8 +24,7 @@ public class PartnerStoreService {
     //등록
     public StoreDto addStore(Long partnerId, StoreForm storeForm) {
         //partnerId와 storeName을 기준으로 이미 있으면 추가 제외
-        boolean exist =
-                storeRepository.findAllByPartnerIdAndName(
+        boolean exist = storeRepository.existsByPartnerIdAndName(
                         partnerId, storeForm.getStoreName());
         if (exist) {
             throw new RuntimeException("Store Already Exists");
