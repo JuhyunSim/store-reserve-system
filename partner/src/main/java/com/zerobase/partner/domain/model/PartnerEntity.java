@@ -1,23 +1,25 @@
 package com.zerobase.partner.domain.model;
 
 import com.zerobase.partner.domain.SignUpForm;
+import com.zerobase.partner.security.common.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.AuditOverride;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @AuditOverride
+@Entity(name = "partner")
 public class PartnerEntity extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +31,11 @@ public class PartnerEntity extends BaseEntity implements UserDetails {
     private String name;
     private String phone;
     private String registerNumber;
+    private UserType userType;
 
     private LocalDateTime verifyExpiredAt;
     private String verificationCode;
     private boolean verify;
-
 
     public static PartnerEntity from(SignUpForm signUpForm) {
         return PartnerEntity.builder()
@@ -42,12 +44,17 @@ public class PartnerEntity extends BaseEntity implements UserDetails {
                 .name(signUpForm.getName())
                 .phone(signUpForm.getPhone())
                 .registerNumber(signUpForm.getRegisterNumber())
+                .userType(UserType.PARTNER)
                 .build();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of
+                (new SimpleGrantedAuthority(
+                        "ROLE_" + this.getUserType()
+                )
+        );
     }
 
     @Override
