@@ -10,5 +10,6 @@ import java.util.List;
 public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
     List<StoreEntity> findAllByPartnerIdOrderByNameAsc(Long partnerId);
 
-    boolean findAllByPartnerIdAndName(Long partnerId, String name);
+     boolean existsByPartnerIdAndName(Long partnerId, String name);
+
 }
