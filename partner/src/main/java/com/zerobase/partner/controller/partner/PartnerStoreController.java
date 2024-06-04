@@ -3,7 +3,8 @@ package com.zerobase.partner.controller.partner;
 import com.zerobase.partner.domain.StoreForm;
 import com.zerobase.partner.domain.dto.StoreDto;
 import com.zerobase.partner.security.config.JwtAuthProvider;
-import com.zerobase.partner.service.PartnerStoreService;
+import com.zerobase.partner.service.StoreService;
+import com.zerobase.partner.service.customer.CustomerSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,8 @@ import java.util.List;
 @Slf4j
 public class PartnerStoreController {
 
-    private final PartnerStoreService partnerStoreService;
+    private final StoreService storeService;
+    private final CustomerSearchService customerSearchService;
     private final JwtAuthProvider jwtAuthProvider;
 
     @GetMapping("/store/info")
@@ -41,10 +43,10 @@ public class PartnerStoreController {
 
         log.info("Extracted email from token: {}", jwtAuthProvider.getEmail(token));
         log.info("Retrieved store info: {}",
-                partnerStoreService.getStoreInfo(jwtAuthProvider.getEmail(token)));
+                storeService.getStoreInfo(jwtAuthProvider.getEmail(token)));
 
 
-        return ResponseEntity.ok(partnerStoreService.getStoreInfo(
+        return ResponseEntity.ok(storeService.getStoreInfo(
                 jwtAuthProvider.getEmail(token))
         );
     }
@@ -66,9 +68,11 @@ public class PartnerStoreController {
             return ResponseEntity.status(401).body("Invalid token");
         }
 
-        StoreDto storeDto = partnerStoreService.addStore(
+        StoreDto storeDto = storeService.addStore(
                 jwtAuthProvider.getId(token), storeForm
         );
+
+        customerSearchService.addAutoCompleteKeyword(storeForm.getStoreName());
 
         return ResponseEntity.ok(storeDto);
     }

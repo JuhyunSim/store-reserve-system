@@ -28,7 +28,9 @@ public class SecurityConfig {
                                 .requestMatchers("/signup/*",
                                         "/signin/*",
                                         "/v3/api-docs/*",
-                                        "/signup/partner/verify").permitAll()
+                                        "/signup/partner/verify",
+                                        "/search/search/autocomplete",
+                                        "/search").permitAll()
                                 .anyRequest().authenticated()// 인증 없이 접근 허용
                 )
                 .csrf(AbstractHttpConfigurer::disable)

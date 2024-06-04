@@ -7,7 +7,7 @@ import org.springframework.data.envers.repository.support.EnversRevisionReposito
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.zerobase"})
 @EnableJpaAuditing
 @EnableJpaRepositories(repositoryFactoryBeanClass =
         EnversRevisionRepositoryFactoryBean.class)
