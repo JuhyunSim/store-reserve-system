@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class PartnerStoreServiceTest {
+class StoreServiceTest {
 
     @Mock
     PartnerRepository partnerRepository;
@@ -28,7 +28,7 @@ class PartnerStoreServiceTest {
     StoreRepository storeRepository;
 
     @InjectMocks
-    PartnerStoreService partnerStoreService;
+    StoreService storeService;
 
     @Test
     void getStoreInfoTest() {
@@ -59,7 +59,7 @@ class PartnerStoreServiceTest {
                 .willReturn(List.of(store1, store2));
 
         //when
-        List<StoreDto> result = partnerStoreService.getStoreInfo(email);
+        List<StoreDto> result = storeService.getStoreInfo(email);
 
         //then
         assertEquals(2, result.size());

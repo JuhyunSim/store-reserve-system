@@ -7,7 +7,7 @@ import com.zerobase.partner.domain.model.StoreEntity;
 import com.zerobase.partner.security.common.UserType;
 import com.zerobase.partner.security.config.JwtAuthProvider;
 import com.zerobase.partner.security.encrypt.Aes256Utils;
-import com.zerobase.partner.service.PartnerStoreService;
+import com.zerobase.partner.service.StoreService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 class PartnerStoreControllerTest {
 
     @Mock
-    private PartnerStoreService partnerStoreService;
+    private StoreService storeService;
 
     @Mock
     private JwtAuthProvider jwtAuthProvider;
@@ -68,7 +68,7 @@ class PartnerStoreControllerTest {
                         .longitude(storeForm.getLongitude())
                         .build());
 
-        given(partnerStoreService.addStore(anyLong(), any(StoreForm.class)))
+        given(storeService.addStore(anyLong(), any(StoreForm.class)))
                 .willReturn(expectedStoreDto);
         given(jwtAuthProvider.validateToken(anyString())).willReturn(true);
 
@@ -77,7 +77,7 @@ class PartnerStoreControllerTest {
 
         // Then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(partnerStoreService, times(1)).addStore(anyLong(), any(StoreForm.class));
+        verify(storeService, times(1)).addStore(anyLong(), any(StoreForm.class));
     }
 
 

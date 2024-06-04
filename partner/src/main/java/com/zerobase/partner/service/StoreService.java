@@ -8,6 +8,7 @@ import com.zerobase.partner.domain.repository.PartnerRepository;
 import com.zerobase.partner.domain.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.Trie;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +17,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PartnerStoreService {
+public class StoreService {
 
     private final StoreRepository storeRepository;
     private final PartnerRepository partnerRepository;
+    private final Trie trie;
 
     //등록
     public StoreDto addStore(Long partnerId, StoreForm storeForm) {
@@ -55,4 +57,6 @@ public class PartnerStoreService {
 
 
     //삭제
+
+
 }
