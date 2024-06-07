@@ -1,0 +1,82 @@
+### 회원가입(Partner)
+POST http://localhost:8080/signup/partner
+Content-Type: application/json
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111",
+  "name": "Kim",
+  "confirmPassword": "1111",
+  "phone": "010-1111-2222",
+  "registerNumber": "123456-1234567"
+}
+
+### 회원가입(고객)
+POST http://localhost:8080/signup/customer
+Content-Type: application/json
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111",
+  "name": "Lee",
+  "confirmPassword": "1111",
+  "phone": "010-1111-2222",
+  "registerNumber": "123456-1234567"
+}
+
+### 회원가입 인증(Partner)
+PUT http://localhost:8080/signup/partner/verify?email=floweronwall31@gmail.com&code=exLoV7YxwU
+Content-Type: application/x-www-form-urlencoded
+
+### 회원가입 인증(고객)
+PUT http://localhost:8080/signup/customer/verify?email=floweronwall31@gmail.com&code=N8EfwSW5lE
+Content-Type: application/x-www-form-urlencoded
+
+### 로그인(Partner)
+POST http://localhost:8080/signin/partner
+Content-Type: application/json
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111"
+}
+
+### 로그인(고객)
+POST http://localhost:8080/signin/customer
+Content-Type: application/json
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111"
+}
+
+### 상점 추가/등록(Partner)
+POST http://localhost:8080/partner/store/add
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJRRzNhVWlJcXltb0RyRGg4TEZlNzFuc0l4OWhHQnp1bEUwWVM3TXRhVEZZPSIsImp0aSI6InQ3aVZHcmhkU0FvL2wwNE40QjVrOXc9PSIsImlhdCI6MTcxNzQyMDEwMiwiZXhwIjoxNzE3NDIzNzAyfQ.Macbd7XM2ZTH3-QeHnmrHDMCV2xnu84C7HcuMSnylj2Ax0Yr36BX7wc9KkAQfQTp
+
+{
+  "storeName": "abc4",
+  "latitude": 30.11,
+  "longitude": 120.11,
+  "description": "abc상점 입니다."
+}
+
+### 정보 조회(Partner)
+GET http://localhost:8080/info/partner
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiIvZ08yR0N0aytQckhKKzY2a2M5YXhnPT0uOXBnaVB4alJicHR2RUNFZ3RFYURWaFJRZEZtdnkvVTVMdERxRW9WVU1KUT0iLCJqdGkiOiIvZ08yR0N0aytQckhKKzY2a2M5YXhnPT0uWStTYTFOTzllWEdBd0RQSFRKV2wvZz09IiwiaWF0IjoxNzE3NzU5ODkwLCJleHAiOjE3MTc3NjM0OTB9.a7LThjMg-D5WbmfSiffAlKZ7WYJLr471Jsj-xcBhtpQJUFtNw75LQnr6pSmdnSEl
+
+### 정보 조회(고객)
+GET http://localhost:8080/info/customer
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IkNVU1RPTUVSIiwic3ViIjoiZERPVUdMWDNXUDduQ0orUlVVaUYrZz09LlhEOTR4TjdJdVNWb0ptK2RoR2paaXNlcm5PUFVGbGxsM2o4dmZLWWEvdDA9IiwianRpIjoiZERPVUdMWDNXUDduQ0orUlVVaUYrZz09LkppcC8yUTQ3Sy95eGVrZkh3L0J1SFE9PSIsImlhdCI6MTcxNzc1ODUyNiwiZXhwIjoxNzE3NzYyMTI2fQ.hu6iTpbOJ73oi3g7KBkoax9983LyO7LkSk4lZkEs-ngRAfABi8mGKeRD4FIuYcks
+
+### 나의 상점 조회하기(Partner)
+GET http://localhost:8080/partner/store/info
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJRRzNhVWlJcXltb0RyRGg4TEZlNzFuc0l4OWhHQnp1bEUwWVM3TXRhVEZZPSIsImp0aSI6InQ3aVZHcmhkU0FvL2wwNE40QjVrOXc9PSIsImlhdCI6MTcxNzQyMDEwMiwiZXhwIjoxNzE3NDIzNzAyfQ.Macbd7XM2ZTH3-QeHnmrHDMCV2xnu84C7HcuMSnylj2Ax0Yr36BX7wc9KkAQfQTp
+
+### 상점 검색(비회원)
+GET http://localhost:8080/search?keyWord=b
+
+### 자동 검색어
+GET http://localhost:8080/search/search/autocomplete?
+    keyWord=a

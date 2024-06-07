@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.0'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+ext {
+    springCloudVersion = "2023.0.2"
+}
+
+group = 'com.zerobase'
+version = 'unspecified'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    implementation project(path: ':partner', configuration: 'default')
+    implementation project(path: ':common-domain', configuration: 'default')
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    //test
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //auto complete
+    implementation 'org.apache.commons:commons-collections4:4.5.0-M1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -1,7 +1,7 @@
 package com.zerobase.partner.service;
 
 import com.zerobase.partner.domain.dto.StoreDto;
-import com.zerobase.partner.domain.model.PartnerEntity;
+import com.zerobase.domain.entity.PartnerEntity;
 import com.zerobase.partner.domain.model.StoreEntity;
 import com.zerobase.partner.domain.repository.PartnerRepository;
 import com.zerobase.partner.domain.repository.StoreRepository;

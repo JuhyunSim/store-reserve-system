@@ -1,0 +1,23 @@
+
+### 대기 예약 추가 (고객)
+POST http://localhost:8081/waiting/add
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IkNVU1RPTUVSIiwic3ViIjoiZERPVUdMWDNXUDduQ0orUlVVaUYrZz09LlhEOTR4TjdJdVNWb0ptK2RoR2paaXNlcm5PUFVGbGxsM2o4dmZLWWEvdDA9IiwianRpIjoiZERPVUdMWDNXUDduQ0orUlVVaUYrZz09LkppcC8yUTQ3Sy95eGVrZkh3L0J1SFE9PSIsImlhdCI6MTcxNzc1ODUyNiwiZXhwIjoxNzE3NzYyMTI2fQ.hu6iTpbOJ73oi3g7KBkoax9983LyO7LkSk4lZkEs-ngRAfABi8mGKeRD4FIuYcks
+
+{
+"storeId": 1,
+"customerName": "Lee",
+"customerEmail": "floweronwall31@gmail.com",
+"customerPhone": "010-1111-2222",
+"storeName": "bbbccc",
+"latitude": 30.11,
+"longitude": 120.11,
+"storePhone": ""
+}
+
+### 대기 예약 확인 (고객)
+PUT http://localhost:8081/waiting/confirm?
+    storeId={{$random.integer(100)}}&
+    name={{$random.alphanumeric(8)}}&
+    phone={{$random.alphanumeric(8)}}
+    Content-Type: application/x-www-form-urlencoded

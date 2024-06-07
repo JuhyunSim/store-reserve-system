@@ -18,19 +18,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final  JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/signup/*",
-                                        "/signin/*",
+                                .requestMatchers("/signup/**",
+                                        "/signin/**",
                                         "/v3/api-docs/*",
-                                        "/signup/partner/verify",
-                                        "/search/search/autocomplete",
-                                        "/search").permitAll()
+                                        "/signup/partner/verify"
+                                ).permitAll()
                                 .anyRequest().authenticated()// 인증 없이 접근 허용
                 )
                 .csrf(AbstractHttpConfigurer::disable)

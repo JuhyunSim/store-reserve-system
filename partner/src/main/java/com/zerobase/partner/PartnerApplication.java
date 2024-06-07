@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaAuditing
 @EnableJpaRepositories(repositoryFactoryBeanClass =
         EnversRevisionRepositoryFactoryBean.class)
-@EntityScan(basePackages = "com.zerobase")
+@EntityScan
 public class PartnerApplication {
     public static void main(String[] args) {
         SpringApplication.run(PartnerApplication.class, args);

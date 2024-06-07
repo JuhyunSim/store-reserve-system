@@ -29,14 +29,14 @@ public class Aes256Utils {
             InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
 
-
         Cipher cipher = Cipher.getInstance(alg);
         log.info("encrypt ivParameterSpec: {}", ivParameterSpec);
+        log.info("secretKey: {}", getSigningKey());
         cipher.init(Cipher.ENCRYPT_MODE, getSigningKey(), ivParameterSpec);
         byte[] cipherText = cipher.doFinal(input.getBytes());
         log.info ("encrpyted cipherText: {}", Base64.getEncoder().encodeToString(cipherText));
-        return Base64.getEncoder()
-                .encodeToString(cipherText);
+        return  Base64.getEncoder().encodeToString(ivParameterSpec.getIV()) + "." +
+                Base64.getEncoder().encodeToString(cipherText);
     }
 
     public String decrypt(String cipherText)
@@ -44,13 +44,18 @@ public class Aes256Utils {
             InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
 
+        byte[] iv = Base64.getDecoder().decode(cipherText.substring(0, cipherText.indexOf('.')));
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+        String afterCipherText = cipherText.substring(cipherText.indexOf('.') + 1);
+
         Cipher cipher = Cipher.getInstance(alg);
         log.info("decrypt cipherText: {}", cipherText);
         log.info("decrypt secretKey: {}", getSigningKey());
         log.info("decrypt ivParameterSpec: {}", ivParameterSpec);
         cipher.init(Cipher.DECRYPT_MODE, getSigningKey(), ivParameterSpec);
         byte[] plainText = cipher.doFinal(Base64.getDecoder()
-                .decode(cipherText));
+                .decode(afterCipherText));
+        log.info ("decrypted plainText: {}", new String(plainText));
         return new String(plainText);
     }
 

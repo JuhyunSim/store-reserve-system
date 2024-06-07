@@ -1,8 +1,8 @@
 package com.zerobase.partner.service;
 
-import com.zerobase.partner.domain.dto.PartnerDto;
-import com.zerobase.partner.domain.model.PartnerEntity;
-import com.zerobase.partner.domain.repository.PartnerRepository;
+import com.zerobase.domain.dto.PartnerDto;
+import com.zerobase.domain.entity.PartnerEntity;
+import com.zerobase.domain.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
