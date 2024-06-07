@@ -3,4 +3,6 @@ include 'partner'
 include 'auth'
 include 'customer'
 include 'customer'
+include 'reserve-api'
+include 'common-domain'
 

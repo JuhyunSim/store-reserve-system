@@ -1,12 +1,15 @@
 package com.zerobase.partner.security.config;
 
-import com.zerobase.partner.security.common.UserType;
+import com.zerobase.domain.security.common.UserType;
 import com.zerobase.partner.security.encrypt.Aes256Utils;
+import com.zerobase.partner.service.CustomerService;
 import com.zerobase.partner.service.PartnerService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.jackson.io.JacksonDeserializer;
+import io.jsonwebtoken.lang.Maps;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,6 +38,7 @@ public class JwtAuthProvider {
     private final long tokenValidTime = 1000L * 60 * 60;
 
     private final PartnerService partnerService;
+    private final CustomerService customerService;
 
     Aes256Utils aes256Utils = new Aes256Utils();
 
@@ -84,8 +88,25 @@ public class JwtAuthProvider {
             BadPaddingException,
             InvalidKeyException {
         log.info("Jwt : {}", jwt);
-        UserDetails userDetails
-                = this.partnerService.loadUserByUsername(this.getEmail(jwt));
+
+        UserType userType = Jwts.parser()
+                .verifyWith(getSignKey())
+                .json(new JacksonDeserializer(Maps.of("roles", UserType.class).build()))
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload()
+                .get("roles", UserType.class);
+
+        UserDetails userDetails = null;
+        if (userType == UserType.PARTNER) {
+            userDetails =
+                    this.partnerService.loadUserByUsername(this.getEmail(jwt).trim());
+        } else {
+            //usertype == CUSTOMER
+            userDetails =
+                    this.customerService.loadUserByUsername(this.getEmail(jwt).trim());
+        }
+
         return new UsernamePasswordAuthenticationToken(userDetails,
                 "", userDetails.getAuthorities());
     }
@@ -99,6 +120,7 @@ public class JwtAuthProvider {
             BadPaddingException,
             InvalidKeyException {
         log.info("cipher text : {}", this.parseClaims(token).getSubject());
+        log.info("email: {}", aes256Utils.decrypt(this.parseClaims(token).getSubject()));
         return aes256Utils.decrypt(this.parseClaims(token).getSubject());
     }
 

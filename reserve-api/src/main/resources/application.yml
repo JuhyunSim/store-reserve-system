@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: store
+  profiles:
+    include: partner
+  data:
+    redis:
+      port: 6379
+      host: localhost
+
+server:
+  port: 8081
+  shutdown: graceful
+
+user-api:
+  feign:
+    client:
+      url: http://localhost:8080

@@ -21,3 +21,7 @@ spring:
       username: store
       password: store
     url: jdbc:mysql://localhost:3306/store
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

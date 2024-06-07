@@ -1,11 +1,11 @@
 package com.zerobase.partner.application;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.zerobase.partner.domain.dto.PartnerDto;
+import com.zerobase.domain.dto.PartnerDto;
 import com.zerobase.partner.service.SignUpService;
 import com.zerobase.partner.service.mailgun.MailgunApi;
-import com.zerobase.partner.domain.SignUpForm;
-import com.zerobase.partner.domain.model.PartnerEntity;
+import com.zerobase.domain.requestForm.SignUpForm;
+import com.zerobase.domain.entity.PartnerEntity;
 import com.zerobase.partner.service.mailgun.SendingMailForm;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +40,7 @@ class SignUpApplicationTest {
     private ArgumentCaptor<SendingMailForm> sendingMailFormCaptor;
 
     @Test
-    void successSignUpTest() throws UnirestException {
+    void successPartnerSignUpTest() throws UnirestException {
         //given
         SignUpForm signUpForm = SignUpForm.builder()
                 .email("test@example.com")
@@ -60,11 +60,11 @@ class SignUpApplicationTest {
                 .verifyExpiredAt(LocalDateTime.now().plusDays(1))
                 .build();
 
-        given(signUpService.isValidEmail(any())).willReturn(false);
+        given(signUpService.partnerIsValidEmail(any())).willReturn(false);
         given(signUpService.savePartnerEntity(any())).willReturn(PartnerDto.from(partnerEntity));
 
         //when
-        PartnerDto partnerDto = signUpApplication.signUp(signUpForm);
+        PartnerDto partnerDto = signUpApplication.partnerSignUp(signUpForm);
 
         //then
         verify(mailgunApi, times(1)).sendVerifyEmail(sendingMailFormCaptor.capture());
@@ -83,7 +83,7 @@ class SignUpApplicationTest {
     }
 
     @Test
-    void failSignUpTest() throws UnirestException {
+    void failPartnerSignUpTest() throws UnirestException {
         //given
         SignUpForm signUpForm = SignUpForm.builder()
                 .email("test@example.com")
@@ -93,11 +93,11 @@ class SignUpApplicationTest {
                 .name("Test User")
                 .build();
 
-        given(signUpService.isValidEmail(any())).willReturn(true);
+        given(signUpService.partnerIsValidEmail(any())).willReturn(true);
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> signUpApplication.signUp(signUpForm));
+                () -> signUpApplication.partnerSignUp(signUpForm));
 
         //then
         assertEquals("이미 등록된 회원입니다.", exception.getMessage());
@@ -134,7 +134,7 @@ class SignUpApplicationTest {
         given(signUpService.savePartnerEntity(any())).willReturn(PartnerDto.from(updatedPartnerEntity));
 
         //when
-        PartnerDto partnerDto = signUpApplication.verifySignUp(email);
+        PartnerDto partnerDto = signUpApplication.partnerVerifySignUp(email);
 
         //then
         assertEquals("test@example.com", partnerDto.getEmail());
@@ -148,7 +148,7 @@ class SignUpApplicationTest {
     }
 
     @Test
-    void failVerifySignUp() throws UnirestException {
+    void failVerifyPartnerSignUp() throws UnirestException {
         //given
         String email = "test@example.com";
 
@@ -166,7 +166,7 @@ class SignUpApplicationTest {
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> signUpApplication.verifySignUp(email));
+                () -> signUpApplication.partnerVerifySignUp(email));
 
         //then
         assertEquals("인증기간이 만료되었습니다.", exception.getMessage());
