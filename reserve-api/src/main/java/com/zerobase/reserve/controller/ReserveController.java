@@ -1,8 +1,7 @@
 package com.zerobase.reserve.controller;
 
-import com.zerobase.domain.dto.ReserveDto;
-import com.zerobase.domain.requestForm.ReserveForm;
-import com.zerobase.partner.security.config.JwtAuthProvider;
+import com.zerobase.domain.dto.ReserveResponseDto;
+import com.zerobase.domain.requestForm.ReserveRequestForm;
 import com.zerobase.reserve.service.ReserveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,23 +21,21 @@ import java.security.NoSuchAlgorithmException;
 public class ReserveController {
 
     private final ReserveService reserveService;
-    private final JwtAuthProvider jwtAuthProvider;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<?> reserveStore(
-            @RequestHeader(name = "Authorization") String token,
-            @RequestBody ReserveForm reserveForm
+            @RequestBody ReserveRequestForm reserveRequestForm
     ) throws InvalidAlgorithmParameterException,
             NoSuchPaddingException,
             IllegalBlockSizeException,
             NoSuchAlgorithmException,
             BadPaddingException,
             InvalidKeyException {
-        ReserveDto reserveDto =
-                reserveService.addWaiting(jwtAuthProvider.getId(token), reserveForm);
+        ReserveResponseDto reserveResponseDto =
+                reserveService.addWaiting(reserveRequestForm);
 
-        return ResponseEntity.ok(reserveDto);
+        return ResponseEntity.ok(reserveResponseDto);
     }
 
     @PutMapping("/confirm")
@@ -47,7 +44,7 @@ public class ReserveController {
             @RequestParam String name,
             @RequestParam String phone
     ) {
-        ReserveDto reserveDto = reserveService.confirmReserve(storeId, name, phone);
-        return ResponseEntity.ok(reserveDto);
+        ReserveResponseDto reserveResponseDto = reserveService.confirmReserve(storeId, name, phone);
+        return ResponseEntity.ok(reserveResponseDto);
     }
 }

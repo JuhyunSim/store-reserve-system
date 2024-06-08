@@ -1,10 +1,9 @@
 package com.zerobase.reserve.controller;
 
-import com.zerobase.domain.requestForm.StoreForm;
 import com.zerobase.domain.dto.StoreDto;
-import com.zerobase.partner.security.config.JwtAuthProvider;
-import com.zerobase.reserve.service.StoreService;
+import com.zerobase.domain.requestForm.StoreForm;
 import com.zerobase.reserve.service.CustomerSearchService;
+import com.zerobase.reserve.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,53 +26,27 @@ public class PartnerStoreController {
 
     private final StoreService storeService;
     private final CustomerSearchService customerSearchService;
-    private final JwtAuthProvider jwtAuthProvider;
 
     @GetMapping("/store/info")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
     //나의 매장 조회하기
-    public ResponseEntity<List<StoreDto>> getStoreInfo(
-            @RequestHeader(name = "Authorization") String token)
+    public ResponseEntity<List<StoreDto>> getStoreInfo(@RequestParam Long id)
             throws InvalidAlgorithmParameterException,
-            NoSuchPaddingException,
-            IllegalBlockSizeException,
-            NoSuchAlgorithmException,
-            BadPaddingException,
-            InvalidKeyException {
-//
-//        log.info("Extracted email from token: {}", jwtAuthProvider.getEmail(token));
-//        log.info("Retrieved store info: {}",
-//                storeService.getStoreInfo(jwtAuthProvider.getEmail(token)));
-//
-
-        return ResponseEntity.ok(storeService.getStoreInfo(
-                jwtAuthProvider.getEmail(token))
-        );
+            NoSuchPaddingException, IllegalBlockSizeException,
+            NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return ResponseEntity.ok(storeService.getStoreInfo(id));
     }
 
     @PostMapping("/store/add")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
     public ResponseEntity<?> addStore(
-            @RequestHeader(name = "Authorization") String token,
+            @RequestParam Long id,
             @RequestBody StoreForm storeForm
-    ) throws InvalidAlgorithmParameterException,
-            NoSuchPaddingException,
-            IllegalBlockSizeException,
-            NoSuchAlgorithmException,
-            BadPaddingException,
-            InvalidKeyException {
-
-        // 토큰 유효성 검사
-        if (!jwtAuthProvider.validateToken(token)) {
-            return ResponseEntity.status(401).body("Invalid token");
-        }
-
-        StoreDto storeDto = storeService.addStore(
-                jwtAuthProvider.getId(token), storeForm
-        );
-
+    ) throws InvalidAlgorithmParameterException, NoSuchPaddingException,
+            IllegalBlockSizeException, NoSuchAlgorithmException,
+            BadPaddingException, InvalidKeyException {
+        StoreDto storeDto = storeService.addStore(id, storeForm);
         customerSearchService.addAutoCompleteKeyword(storeForm.getStoreName());
-
         return ResponseEntity.ok(storeDto);
     }
 }

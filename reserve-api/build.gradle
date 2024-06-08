@@ -28,7 +28,6 @@ repositories {
 dependencies {
 //    implementation project(path: ':partner', configuration: 'default')
     implementation project(path: ':common-domain', configuration: 'default')
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     //lombok
@@ -46,6 +45,12 @@ dependencies {
 
     //auto complete
     implementation 'org.apache.commons:commons-collections4:4.5.0-M1'
+
+    //json
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+
 }
 
 test {

@@ -1,10 +1,11 @@
-package com.zerobase.partner.service;
+package com.zerobase.reserve.controller.service;
 
-import com.zerobase.partner.domain.dto.StoreDto;
+import com.zerobase.domain.dto.StoreDto;
 import com.zerobase.domain.entity.PartnerEntity;
-import com.zerobase.partner.domain.model.StoreEntity;
-import com.zerobase.partner.domain.repository.PartnerRepository;
-import com.zerobase.partner.domain.repository.StoreRepository;
+import com.zerobase.domain.entity.StoreEntity;
+import com.zerobase.domain.repository.PartnerRepository;
+import com.zerobase.domain.repository.StoreRepository;
+import com.zerobase.reserve.service.StoreService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -59,7 +60,7 @@ class StoreServiceTest {
                 .willReturn(List.of(store1, store2));
 
         //when
-        List<StoreDto> result = storeService.getStoreInfo(email);
+        List<StoreDto> result = storeService.getStoreInfo(1L);
 
         //then
         assertEquals(2, result.size());

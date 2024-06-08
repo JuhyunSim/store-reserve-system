@@ -24,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Audited
-@AuditOverride
+@AuditOverride(forClass = BaseEntity.class)
 public class CustomerEntity extends BaseEntity implements UserDetails {
 
     @Id

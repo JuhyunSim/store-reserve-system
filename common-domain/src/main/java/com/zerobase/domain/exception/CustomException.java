@@ -1,4 +1,4 @@
-package com.zerobase.reserve.exception;
+package com.zerobase.domain.exception;
 
 public class CustomException extends RuntimeException {
     private ErrorCode errorCode;

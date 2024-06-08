@@ -1,7 +1,7 @@
 package com.zerobase.domain.entity;
 
-import com.zerobase.partner.domain.SignUpForm;
-import com.zerobase.partner.security.common.UserType;
+import com.zerobase.domain.requestForm.SignUpForm;
+import com.zerobase.domain.security.common.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.AuditOverride;
@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@AuditOverride
+@AuditOverride(forClass = BaseEntity.class)
 @Entity(name = "partner")
 public class PartnerEntity extends BaseEntity implements UserDetails {
     @Id
@@ -52,14 +52,14 @@ public class PartnerEntity extends BaseEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of
                 (new SimpleGrantedAuthority(
-                        "ROLE_" + this.getUserType()
+                        "ROLE_" + this.getUserType().name()
                 )
         );
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override
@@ -79,6 +79,6 @@ public class PartnerEntity extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return verify;
     }
 }

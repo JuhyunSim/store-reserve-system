@@ -1,7 +1,7 @@
-package com.zerobase.reserve.redis;
+package com.zerobase.domain.redis;
 
 import com.zerobase.domain.entity.BaseEntity;
-import com.zerobase.domain.entity.CustomerEntity;
+import com.zerobase.domain.requestForm.ReserveRequestForm;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,11 +44,11 @@ public class Waiting {
         private boolean confirm;
         //createdDate -> 예약시간
 
-        public static Customer from(CustomerEntity customerEntity) {
+        public static Customer from(ReserveRequestForm reserveRequestForm) {
             return Customer.builder()
-                    .customerId(customerEntity.getId())
-                    .name(customerEntity.getName())
-                    .phone(customerEntity.getPhone())
+                    .customerId(reserveRequestForm.getCustomerId())
+                    .name(reserveRequestForm.getCustomerName())
+                    .phone(reserveRequestForm.getCustomerPhone())
                     .confirm(false)
                     .build();
         }

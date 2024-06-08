@@ -1,9 +1,11 @@
-package com.zerobase.partner.security.config;
+package com.zerobase.domain.security.config;
 
+import com.zerobase.domain.entity.PartnerEntity;
+import com.zerobase.domain.repository.PartnerRepository;
 import com.zerobase.domain.security.common.UserType;
-import com.zerobase.partner.security.encrypt.Aes256Utils;
-import com.zerobase.partner.service.CustomerService;
-import com.zerobase.partner.service.PartnerService;
+import com.zerobase.domain.security.service.SecurityCustomerService;
+import com.zerobase.domain.security.service.SecurityPartnerService;
+import com.zerobase.domain.security.utils.Aes256Utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -37,8 +39,9 @@ public class JwtAuthProvider {
     private static final Logger log = LoggerFactory.getLogger(JwtAuthProvider.class);
     private final long tokenValidTime = 1000L * 60 * 60;
 
-    private final PartnerService partnerService;
-    private final CustomerService customerService;
+    private final SecurityPartnerService securityPartnerService;
+    private final SecurityCustomerService securityCustomerService;
+    private final PartnerRepository partnerRepository;
 
     Aes256Utils aes256Utils = new Aes256Utils();
 
@@ -99,12 +102,17 @@ public class JwtAuthProvider {
 
         UserDetails userDetails = null;
         if (userType == UserType.PARTNER) {
+
+            PartnerEntity partnerEntity = partnerRepository.findById(1L)
+                    .orElseThrow(() -> new RuntimeException("찾을 수 없습니다. "));
+            log.info(userDetails.getUsername());
+
             userDetails =
-                    this.partnerService.loadUserByUsername(this.getEmail(jwt).trim());
+                    this.securityPartnerService.loadUserByUsername(this.getEmail(jwt).trim());
         } else {
             //usertype == CUSTOMER
             userDetails =
-                    this.customerService.loadUserByUsername(this.getEmail(jwt).trim());
+                    this.securityCustomerService.loadUserByUsername(this.getEmail(jwt).trim());
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails,
