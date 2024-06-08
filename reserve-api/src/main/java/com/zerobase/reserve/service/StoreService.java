@@ -1,13 +1,11 @@
 package com.zerobase.reserve.service;
 
+import com.zerobase.domain.dto.StoreDto;
+import com.zerobase.domain.entity.PartnerEntity;
+import com.zerobase.domain.entity.StoreEntity;
 import com.zerobase.domain.repository.PartnerRepository;
 import com.zerobase.domain.repository.StoreRepository;
 import com.zerobase.domain.requestForm.StoreForm;
-import com.zerobase.domain.dto.StoreDto;
-import com.zerobase.domain.entity.StoreEntity;
-import com.zerobase.reserve.domain.repository.StoreRepository;
-import com.zerobase.partner.domain.model.PartnerEntity;
-import com.zerobase.partner.domain.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.Trie;
@@ -21,7 +19,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class StoreService {
 
+
     private final StoreRepository storeRepository;
+
     private final PartnerRepository partnerRepository;
     private final Trie trie;
 
@@ -40,8 +40,8 @@ public class StoreService {
     }
 
     //조회
-    public List<StoreDto> getStoreInfo(String email) {
-        PartnerEntity partnerEntity = partnerRepository.findByEmail(email).orElseThrow(
+    public List<StoreDto> getStoreInfo(Long partnerId) {
+        PartnerEntity partnerEntity = partnerRepository.findById(partnerId).orElseThrow(
                 () -> new RuntimeException("Partner not found")
         );
 

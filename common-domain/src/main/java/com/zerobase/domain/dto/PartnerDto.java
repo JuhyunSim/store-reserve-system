@@ -1,7 +1,7 @@
 package com.zerobase.domain.dto;
 
 import com.zerobase.domain.entity.PartnerEntity;
-import com.zerobase.partner.security.common.UserType;
+import com.zerobase.domain.security.common.UserType;
 import lombok.*;
 
 import java.time.LocalDateTime;

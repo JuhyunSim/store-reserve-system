@@ -18,18 +18,18 @@ Content-Type: application/json
 {
   "email": "floweronwall31@gmail.com",
   "password": "1111",
-  "name": "Lee",
+  "name": "Park",
   "confirmPassword": "1111",
   "phone": "010-1111-2222",
   "registerNumber": "123456-1234567"
 }
 
 ### 회원가입 인증(Partner)
-PUT http://localhost:8080/signup/partner/verify?email=floweronwall31@gmail.com&code=exLoV7YxwU
+PUT http://localhost:8080/signup/partner/verify?email=floweronwall31@gmail.com&code=IgwaxojVtY
 Content-Type: application/x-www-form-urlencoded
 
 ### 회원가입 인증(고객)
-PUT http://localhost:8080/signup/customer/verify?email=floweronwall31@gmail.com&code=N8EfwSW5lE
+PUT http://localhost:8080/signup/customer/verify?email=floweronwall31@gmail.com&code=e4Llbziwik
 Content-Type: application/x-www-form-urlencoded
 
 ### 로그인(Partner)
@@ -51,9 +51,9 @@ Content-Type: application/json
 }
 
 ### 상점 추가/등록(Partner)
-POST http://localhost:8080/partner/store/add
+POST http://localhost:8081/partner/store/add
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJRRzNhVWlJcXltb0RyRGg4TEZlNzFuc0l4OWhHQnp1bEUwWVM3TXRhVEZZPSIsImp0aSI6InQ3aVZHcmhkU0FvL2wwNE40QjVrOXc9PSIsImlhdCI6MTcxNzQyMDEwMiwiZXhwIjoxNzE3NDIzNzAyfQ.Macbd7XM2ZTH3-QeHnmrHDMCV2xnu84C7HcuMSnylj2Ax0Yr36BX7wc9KkAQfQTp
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJHNTduc2I1TEVsR2pPbGJMV1phWlF3PT0udEJFSkgrWHpZYXh4ZG41MjRFVDJ2Y0lYN3gvaW5JMDBzMXVIbHNOc3NSMD0iLCJqdGkiOiJHNTduc2I1TEVsR2pPbGJMV1phWlF3PT0uUE9xR092cHVLUTNxZ0JsRlgvMzBnQT09IiwiaWF0IjoxNzE3ODI4MDEyLCJleHAiOjE3MTc4MzE2MTJ9.IHVTwxAzKUd5blG2g8g6JWPcZMiYxtqIejX7jV0ul5lyrlh4wC_DNnW6XR3Lr8QT
 
 {
   "storeName": "abc4",
@@ -80,3 +80,14 @@ GET http://localhost:8080/search?keyWord=b
 ### 자동 검색어
 GET http://localhost:8080/search/search/autocomplete?
     keyWord=a
+
+### 회원탈퇴
+# @no-cookie-jar
+DELETE http://localhost:8080/withdrawal/customer
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJzWVFIdGhWRUM0N1ovYm9JaTJjVkJ3PT0uRDJ0eXhuYy9Sclhwang2TWpDY1cwQVpvR0wwVkhUWlZEUWN1R3dDS2tsaz0iLCJqdGkiOiJzWVFIdGhWRUM0N1ovYm9JaTJjVkJ3PT0uVEhab2duRzI2VVlTS0dYZ1VvRlpUZz09IiwiaWF0IjoxNzE3ODE5NDE4LCJleHAiOjE3MTc4MjMwMTh9.Qoti70_0H_Ky89xjKY2HA21Qdh3hk17j6qdesnJTsfWT9zMQWqXOJ4XO-WzvEi8Y
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111"
+}

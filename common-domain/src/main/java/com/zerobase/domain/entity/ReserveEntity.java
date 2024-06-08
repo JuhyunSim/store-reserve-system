@@ -14,7 +14,7 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@AuditOverride
+@AuditOverride(forClass = BaseEntity.class)
 @Audited
 public class ReserveEntity extends BaseEntity {
     @Id

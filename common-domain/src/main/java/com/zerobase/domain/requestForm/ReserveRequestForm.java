@@ -7,14 +7,11 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReserveForm {
+public class ReserveRequestForm {
 
     private Long storeId;
+    private Long customerId;
     private String customerName;
     private String customerEmail;
     private String customerPhone;
-    private String storeName;
-    private Double latitude;
-    private Double longitude;
-    private String storePhone;
 }

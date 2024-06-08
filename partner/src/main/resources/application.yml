@@ -1,26 +1,8 @@
 spring:
   application:
     name: store
-  jwt:
-    secret: emVyb2Jhc2Utc3ByaW5nLWJvb3QtcHJvamVjdC1kaXZpZGVuZAo=
-
-  jpa:
-    generate-ddl: false
-    hibernate:
-      ddl-auto: update
-
-    properties:
-      hibernate:
-        ejb:
-          interceptor: org.hibernate.envers.event.spi.EnversIntegrator
-        dialect: org.hibernate.dialect.MySQL8Dialect
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      username: store
-      password: store
-    url: jdbc:mysql://localhost:3306/store
+  profiles:
+    include: common-domain
 
   mvc:
     pathmatch:

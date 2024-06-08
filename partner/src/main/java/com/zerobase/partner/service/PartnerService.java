@@ -4,16 +4,13 @@ import com.zerobase.domain.dto.PartnerDto;
 import com.zerobase.domain.entity.PartnerEntity;
 import com.zerobase.domain.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class PartnerService implements UserDetailsService {
+public class PartnerService {
     private final PartnerRepository partnerRepository;
 
     public PartnerDto getPartnerInfo(Long partnerId, String email) {
@@ -27,12 +24,5 @@ public class PartnerService implements UserDetailsService {
         return partnerRepository.findById(id).stream()
                 .filter(customer -> customer.getEmail().equals(email))
                 .findFirst();
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
-        return partnerRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found" + email));
     }
 }

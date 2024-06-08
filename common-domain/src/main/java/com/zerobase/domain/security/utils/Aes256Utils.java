@@ -1,4 +1,4 @@
-package com.zerobase.partner.security.encrypt;
+package com.zerobase.domain.security.utils;
 
 import io.jsonwebtoken.io.Decoders;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.zerobase.reserve.config;
+package com.zerobase.domain.redis;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -2,7 +2,7 @@ package com.zerobase.partner.application;
 
 import com.zerobase.domain.entity.CustomerEntity;
 import com.zerobase.domain.security.common.UserType;
-import com.zerobase.partner.security.config.JwtAuthProvider;
+import com.zerobase.domain.security.config.JwtAuthProvider;
 import com.zerobase.domain.requestForm.SignInForm;
 import com.zerobase.domain.entity.PartnerEntity;
 import com.zerobase.partner.service.SignInService;

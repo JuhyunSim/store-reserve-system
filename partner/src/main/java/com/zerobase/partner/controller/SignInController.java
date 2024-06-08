@@ -2,7 +2,7 @@ package com.zerobase.partner.controller;
 
 import com.zerobase.partner.application.SignInApplication;
 import com.zerobase.domain.requestForm.SignInForm;
-import com.zerobase.partner.security.config.JwtAuthProvider;
+import com.zerobase.domain.security.config.JwtAuthProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

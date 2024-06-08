@@ -1,6 +1,5 @@
-    package com.zerobase.partner.config;
+    package com.zerobase.domain.security.config;
 
-    import com.zerobase.partner.security.config.JwtAuthProvider;
     import jakarta.servlet.FilterChain;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@
         //api 요청 시, 토큰 포함여부 확인, 토큰의 유효성 검사
 
         public static final String TOKEN_HEADER = "Authorization";
-    //    public static final String TOKEN_PREFIX = "Bearer "; // jwt 토큰 사용 시, 토큰 타입
+        public static final String TOKEN_PREFIX = "Bearer "; // jwt 토큰 사용 시, 토큰 타입
         private final JwtAuthProvider jwtAuthProvider;
 
         @SneakyThrows
@@ -54,10 +53,9 @@
             String token = request.getHeader(TOKEN_HEADER);
             log.info("Filtering request token: {}", token);
 
-            if (!ObjectUtils.isEmpty(token)) {
-                return token;
+            if (!ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX)) {
+                return token.substring(TOKEN_PREFIX.length());
             }
             return null;
         }
-
     }
