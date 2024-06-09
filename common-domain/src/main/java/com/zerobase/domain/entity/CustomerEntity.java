@@ -38,6 +38,7 @@ public class CustomerEntity extends BaseEntity implements UserDetails {
     private String registerNumber;
     private UserType userType;
 
+    //회원가입
     private LocalDateTime verifyExpiredAt;
     private String verificationCode;
     private boolean verify;

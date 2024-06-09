@@ -113,6 +113,16 @@ public class JwtAuthProvider {
                 "", userDetails.getAuthorities());
     }
 
+    public UserType getUserType(String jwt) {
+        return Jwts.parser()
+                .verifyWith(getSignKey())
+                .json(new JacksonDeserializer(Maps.of("roles", UserType.class).build()))
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload()
+                .get("roles", UserType.class);
+    }
+
     //token에 email 확인
     public String getEmail(String token)
             throws InvalidAlgorithmParameterException,
@@ -144,14 +154,19 @@ public class JwtAuthProvider {
             IllegalBlockSizeException, NoSuchAlgorithmException,
             BadPaddingException, InvalidKeyException {
 
-        String resolvedToken = token.substring("Bearer ".length());
+        String resolvedToken = resolveToken(token);
         return UserVo.builder()
                 .id(this.getId(resolvedToken))
                 .email(this.getEmail(resolvedToken))
                 .build();
     }
 
-
+    private String resolveToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring("Bearer ".length());
+        }
+        return null;
+    }
     //토큰 기간 만료 확인
     public boolean validateToken(String token) {
         if (!StringUtils.hasText(token)) {

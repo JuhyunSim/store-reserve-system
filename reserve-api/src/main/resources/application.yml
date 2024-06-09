@@ -10,3 +10,7 @@ user-api:
 spring:
   profiles:
     include: common-domain
+
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
