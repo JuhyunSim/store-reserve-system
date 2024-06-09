@@ -21,7 +21,7 @@ public class ReserveResponseDto {
                 .customerId(waitingCustomer.getCustomerId())
                 .customerName(waitingCustomer.getName())
                 .phone(waitingCustomer.getPhone())
-                .confirm(false)
+                .confirm(waitingCustomer.isConfirm())
                 .build();
     }
 }

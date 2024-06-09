@@ -36,7 +36,7 @@ public class WithDrawalController {
             InvalidKeyException {
         return ResponseEntity.ok(
                 withDrawalService.deletePartner(
-                        jwtAuthProvider.getId(token), withDrawalForm
+                        jwtAuthProvider.getUserVo(token).getId(), withDrawalForm
                 )
         );
     }
@@ -54,7 +54,7 @@ public class WithDrawalController {
             InvalidKeyException {
         return ResponseEntity.ok(
                 withDrawalService.deleteCustomer(
-                        jwtAuthProvider.getId(token), withDrawalForm
+                        jwtAuthProvider.getUserVo(token).getId(), withDrawalForm
                 )
         );
     }

@@ -8,10 +8,10 @@ import org.springframework.data.envers.repository.support.EnversRevisionReposito
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {"com.zerobase"})
+@SpringBootApplication(scanBasePackages = "com.zerobase")
 @EnableJpaAuditing
-@EnableJpaRepositories(basePackages = "com.zerobase", repositoryFactoryBeanClass =
-        EnversRevisionRepositoryFactoryBean.class)
+@EnableJpaRepositories(basePackages = "com.zerobase.domain",
+        repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @EntityScan("com.zerobase")
 @ComponentScan("com.zerobase")
 public class PartnerApplication {

@@ -14,5 +14,5 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
 
     boolean existsById(Long customerId);
 
-    boolean deleteByIdAndEmail(Long id, String email);
+    Integer deleteByIdAndEmail(Long id, String email);
 }

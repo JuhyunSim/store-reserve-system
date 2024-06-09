@@ -27,7 +27,8 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers(
                                         "/search/**",
-                                        "/search/*").permitAll()
+                                        "/search/*",
+                                        "/waiting/confirm").permitAll()
                                 .anyRequest().authenticated()// 인증 없이 접근 허용
                 )
                 .csrf(AbstractHttpConfigurer::disable)

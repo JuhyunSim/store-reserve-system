@@ -12,5 +12,5 @@ public interface PartnerRepository extends JpaRepository<PartnerEntity, Long> {
 
     Optional<PartnerEntity> findByIdAndEmail(Long id, String email);
 
-    void deleteByIdAndEmail(Long id, String email);
+    Integer deleteByIdAndEmail(Long id, String email);
 }
