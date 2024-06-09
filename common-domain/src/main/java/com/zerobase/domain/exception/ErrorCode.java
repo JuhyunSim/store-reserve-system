@@ -18,8 +18,16 @@ public enum ErrorCode {
     NOT_FOUND_RESERVATION(HttpStatus.BAD_REQUEST,
             "입력하신 정보와 일치하는 예약 정보가 없습니다."),
     VALID_TIME_EXPIRED(HttpStatus.BAD_REQUEST,
-            "예약 유효시간이 만료되었습니다. 다시 예약을 진행해주세요.")
+            "예약 유효시간이 만료되었습니다. 다시 예약을 진행해주세요."),
+
+    //review
+    NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰를 찾을 수 없습니다."),
+    NO_TEXT(HttpStatus.BAD_REQUEST, "리뷰 내용을 입력하세요."),
+    NO_RATING(HttpStatus.BAD_REQUEST, "평점을 입력하세요."),
+    NOT_AUTH_REVIEW(HttpStatus.BAD_REQUEST, "매장을 이용한 고객만 리뷰를 작성할 수 있습니다."),
+    NOT_AUTH_UPDATE_REVIEW(HttpStatus.BAD_REQUEST, "리뷰를 작성한 고객만 리뷰를 작성할 수 있습니다.")
     ;
+
 
     private HttpStatus httpStatus;
     private String message;

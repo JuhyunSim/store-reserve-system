@@ -19,6 +19,8 @@ public class Waiting {
 
     @Id
     private Long storeId;
+
+    @Builder.Default
     private List<Customer> customerList = new ArrayList<>();
 
     @Getter
