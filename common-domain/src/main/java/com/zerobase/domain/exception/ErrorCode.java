@@ -25,9 +25,13 @@ public enum ErrorCode {
     NO_TEXT(HttpStatus.BAD_REQUEST, "리뷰 내용을 입력하세요."),
     NO_RATING(HttpStatus.BAD_REQUEST, "평점을 입력하세요."),
     NOT_AUTH_REVIEW(HttpStatus.BAD_REQUEST, "매장을 이용한 고객만 리뷰를 작성할 수 있습니다."),
-    NOT_AUTH_UPDATE_REVIEW(HttpStatus.BAD_REQUEST, "리뷰를 작성한 고객만 리뷰를 작성할 수 있습니다.")
-    ;
+    NOT_AUTH_UPDATE_REVIEW(HttpStatus.BAD_REQUEST, "리뷰를 작성한 고객만 리뷰를 작성할 수 있습니다."),
 
+    //store
+    ALREADY_EXIST_STORE(HttpStatus.BAD_REQUEST, "이미 존재하는 매장입니다."),
+    NOT_AUTH_UPDATE_STORE(HttpStatus.BAD_REQUEST, "매장 수정 권한이 없습니다."),
+    NOT_AUTH_DELETE_STORE(HttpStatus.BAD_REQUEST, "매장 수정 권한이 없습니다."),
+    FAIL_TO_DELETE_STORE(HttpStatus.BAD_REQUEST, "매장 삭제에 실패하였습니다.");
 
     private HttpStatus httpStatus;
     private String message;

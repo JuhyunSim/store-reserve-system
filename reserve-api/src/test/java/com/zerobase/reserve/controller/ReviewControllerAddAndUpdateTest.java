@@ -2,9 +2,7 @@ package com.zerobase.reserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.domain.dto.ReviewDto;
-import com.zerobase.domain.entity.ReserveEntity;
-import com.zerobase.domain.repository.ReserveRepository;
-import com.zerobase.domain.requestForm.ReviewForm;
+import com.zerobase.domain.requestForm.review.ReviewForm;
 import com.zerobase.domain.requestForm.UpdateReviewForm;
 import com.zerobase.domain.security.common.UserType;
 import com.zerobase.domain.security.common.UserVo;
@@ -13,7 +11,6 @@ import com.zerobase.reserve.service.ReviewService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,17 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;

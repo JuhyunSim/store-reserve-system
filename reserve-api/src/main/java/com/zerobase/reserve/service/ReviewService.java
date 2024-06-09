@@ -6,7 +6,7 @@ import com.zerobase.domain.exception.CustomException;
 import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.repository.ReserveRepository;
 import com.zerobase.domain.repository.ReviewRepository;
-import com.zerobase.domain.requestForm.ReviewForm;
+import com.zerobase.domain.requestForm.review.ReviewForm;
 import com.zerobase.domain.requestForm.UpdateReviewForm;
 import com.zerobase.domain.security.common.UserType;
 import lombok.RequiredArgsConstructor;

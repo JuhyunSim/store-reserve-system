@@ -1,6 +1,6 @@
 package com.zerobase.domain.entity;
 
-import com.zerobase.domain.requestForm.ReviewForm;
+import com.zerobase.domain.requestForm.review.ReviewForm;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
