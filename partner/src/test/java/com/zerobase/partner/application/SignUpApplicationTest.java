@@ -73,7 +73,7 @@ class SignUpApplicationTest {
         assertEquals("Complete Signup with Verification", sentMail.getSubject());
 
         assertEquals("test@example.com", partnerDto.getEmail());
-        assertEquals("******", partnerDto.getPassword());
+        assertEquals("password", partnerDto.getPassword());
         assertEquals("010-1234-5678", partnerDto.getPhone());
         assertEquals("1234567890", partnerDto.getRegisterNumber());
         assertEquals("Test User", partnerDto.getName());

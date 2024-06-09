@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
-@Entity
+@Entity(name = "store")
 @Getter
 @Setter
 @Builder

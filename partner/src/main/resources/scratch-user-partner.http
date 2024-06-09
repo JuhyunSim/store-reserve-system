@@ -1,0 +1,46 @@
+### 회원가입(Partner)
+POST http://localhost:8080/signup/partner
+Content-Type: application/json
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111",
+  "name": "Kim",
+  "confirmPassword": "1111",
+  "phone": "010-1111-2222",
+  "registerNumber": "123456-1234567"
+}
+
+### 회원가입 인증(Partner)
+PUT http://localhost:8080/signup/partner/verify?email=floweronwall31@gmail.com&code=EFOMXqtjK5
+Content-Type: application/x-www-form-urlencoded
+
+### 로그인(Partner)
+POST http://localhost:8080/signin/partner
+Content-Type: application/json
+
+{
+  "email": "floweronwall31@gmail.com",
+  "password": "1111"
+}
+
+### 상점 추가/등록(Partner)
+POST http://localhost:8081/partner/store/add
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJOSzdzeC9PYWJCNDZDckc4bGgzZFB3PT0uVVJnL1hDemdmKzV1L2tGMFkxUVNPRlErRCtTV21QOGhlUlVZbk5jUitMYz0iLCJqdGkiOiJOSzdzeC9PYWJCNDZDckc4bGgzZFB3PT0ucXg4alNERStsTjF4NW8zYkIyVlo5UT09IiwiaWF0IjoxNzE3ODQ1NjE0LCJleHAiOjE3MTc4NDkyMTR9.PnyYy3WA7SwJPFzgXxqP4pmFPDWPWbUvfhzpaVAD6lVH2xqgdhndQ0196I90G5gW
+
+{
+  "partnerId": 1,
+  "storeName": "abc4",
+  "latitude": 30.11,
+  "longitude": 120.11,
+  "description": "abc상점 입니다."
+}
+
+### 정보 조회(Partner)
+GET http://localhost:8080/info/partner
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJOSzdzeC9PYWJCNDZDckc4bGgzZFB3PT0uVVJnL1hDemdmKzV1L2tGMFkxUVNPRlErRCtTV21QOGhlUlVZbk5jUitMYz0iLCJqdGkiOiJOSzdzeC9PYWJCNDZDckc4bGgzZFB3PT0ucXg4alNERStsTjF4NW8zYkIyVlo5UT09IiwiaWF0IjoxNzE3ODQ1NjE0LCJleHAiOjE3MTc4NDkyMTR9.PnyYy3WA7SwJPFzgXxqP4pmFPDWPWbUvfhzpaVAD6lVH2xqgdhndQ0196I90G5gW
+
+### 나의 상점 조회하기(Partner)
+GET http://localhost:8081/partner/store/info?id=1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IlBBUlRORVIiLCJzdWIiOiJOSzdzeC9PYWJCNDZDckc4bGgzZFB3PT0uVVJnL1hDemdmKzV1L2tGMFkxUVNPRlErRCtTV21QOGhlUlVZbk5jUitMYz0iLCJqdGkiOiJOSzdzeC9PYWJCNDZDckc4bGgzZFB3PT0ucXg4alNERStsTjF4NW8zYkIyVlo5UT09IiwiaWF0IjoxNzE3ODQ1NjE0LCJleHAiOjE3MTc4NDkyMTR9.PnyYy3WA7SwJPFzgXxqP4pmFPDWPWbUvfhzpaVAD6lVH2xqgdhndQ0196I90G5gW

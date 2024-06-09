@@ -1,18 +1,17 @@
 package com.zerobase.partner.application;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.zerobase.domain.requestForm.SignUpForm;
 import com.zerobase.domain.dto.CustomerDto;
 import com.zerobase.domain.dto.PartnerDto;
 import com.zerobase.domain.entity.CustomerEntity;
 import com.zerobase.domain.entity.PartnerEntity;
+import com.zerobase.domain.requestForm.SignUpForm;
 import com.zerobase.partner.service.SignUpService;
 import com.zerobase.partner.service.mailgun.MailgunApi;
 import com.zerobase.partner.service.mailgun.SendingMailForm;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +22,6 @@ public class SignUpApplication {
     private final SignUpService signUpService;
     private final MailgunApi mailgunApi;
 
-    @Transactional
     public PartnerDto partnerSignUp(SignUpForm signUpForm) throws UnirestException {
         //사용 가능한 이메일 여부 확인
         if (signUpService.partnerIsValidEmail(signUpForm)) {
@@ -51,7 +49,6 @@ public class SignUpApplication {
         return signUpService.savePartnerEntity(partnerEntity);
     }
 
-    @Transactional
     public PartnerDto partnerVerifySignUp(String email) {
         PartnerEntity partnerEntity = signUpService.findPartnerByEmail(email);
 
@@ -63,7 +60,6 @@ public class SignUpApplication {
         return signUpService.savePartnerEntity(partnerEntity);
     }
 
-    @Transactional
     public CustomerDto customerSignUp(SignUpForm signUpForm)
             throws UnirestException {
         //사용 가능한 이메일 여부 확인
@@ -92,7 +88,6 @@ public class SignUpApplication {
         return signUpService.saveCustomerEntity(customerEntity);
     }
 
-    @Transactional
     public CustomerDto customerVerifySignUp(String email) {
         CustomerEntity customerEntity = signUpService.findCustomerByEmail(email);
 

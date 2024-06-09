@@ -7,6 +7,10 @@ plugins {
 group = 'com.zerobase'
 version = 'unspecified'
 
+ext {
+    springCloudVersion = "2023.0.2"
+}
+
 
 java {
     sourceCompatibility = '17'
@@ -25,9 +29,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.data:spring-data-envers:3.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     //database
-    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     //lombok
@@ -45,10 +49,20 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
+
 
     //test
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
 }
 
 test {

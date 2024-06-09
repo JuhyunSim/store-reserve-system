@@ -1,11 +1,14 @@
 package com.zerobase.reserve.controller.service.customer;
 
-import com.zerobase.partner.domain.dto.StoreDto;
-import com.zerobase.partner.domain.model.StoreEntity;
-import com.zerobase.partner.domain.repository.StoreRepository;
+import com.zerobase.domain.dto.StoreDto;
+import com.zerobase.domain.entity.StoreEntity;
+import com.zerobase.domain.repository.StoreRepository;
+import com.zerobase.reserve.service.CustomerSearchService;
 import org.apache.commons.collections4.Trie;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,7 +44,7 @@ class CustomerSearchServiceTest {
                 .name("a")
                 .build();
 
-        BDDMockito.given(storeRepository.findByNameContaining(ArgumentMatchers.anyString()))
+        given(storeRepository.findByNameContaining(anyString()))
                 .willReturn(List.of(store1, store2));
 
         //when
@@ -61,15 +64,15 @@ class CustomerSearchServiceTest {
         StoreEntity store2 = StoreEntity.builder()
                 .name("a")
                 .build();
-        BDDMockito.given(storeRepository.findByNameContaining(ArgumentMatchers.anyString()))
+        given(storeRepository.findByNameContaining(anyString()))
                 .willReturn(List.of());
 
         //when
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class,
+        RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> customerSearchService.searchStore("c"));
 
         //then
-        Assertions.assertEquals("검색어와 일치하는 매장이 없습니다.",
+        assertEquals("검색어와 일치하는 매장이 없습니다.",
                 exception.getMessage());
 
 
@@ -91,11 +94,11 @@ class CustomerSearchServiceTest {
         List<String> result = customerSearchService.getAutoCompleteKeywords(keyword);
 
         //then
-        Assertions.assertEquals(4, result.size());
-        Assertions.assertEquals("apartment", result.get(0));
-        Assertions.assertEquals("apple", result.get(1));
-        Assertions.assertEquals("approach", result.get(2));
-        Assertions.assertEquals("april", result.get(3));
+        assertEquals(4, result.size());
+        assertEquals("apartment", result.get(0));
+        assertEquals("apple", result.get(1));
+        assertEquals("approach", result.get(2));
+        assertEquals("april", result.get(3));
     }
 
 }

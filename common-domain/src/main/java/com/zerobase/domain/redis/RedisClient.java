@@ -14,7 +14,7 @@ import org.springframework.util.ObjectUtils;
 public class RedisClient {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     public <T> T get(Long key, Class<T> classType){
         return get(key.toString(), classType);
@@ -45,4 +45,5 @@ public class RedisClient {
             throw new RuntimeException("대기 등록에 실패했습니다.");
         }
     }
+
 }

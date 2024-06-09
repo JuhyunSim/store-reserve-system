@@ -26,16 +26,18 @@ public class StoreService {
     private final Trie trie;
 
     //등록
-    public StoreDto addStore(Long partnerId, StoreForm storeForm) {
+    public StoreDto addStore(StoreForm storeForm) {
         //partnerId와 storeName을 기준으로 이미 있으면 추가 제외
         boolean exist = storeRepository.existsByPartnerIdAndName(
-                        partnerId, storeForm.getStoreName());
+                        storeForm.getPartnerId(), storeForm.getStoreName());
         if (exist) {
             throw new RuntimeException("Store Already Exists");
         }
 
         return StoreDto.from(
-                storeRepository.save(StoreEntity.of(partnerId, storeForm))
+                storeRepository.save(StoreEntity.of(
+                        storeForm.getPartnerId(), storeForm)
+                )
         );
     }
 
@@ -47,7 +49,7 @@ public class StoreService {
 
         List<StoreDto> result = storeRepository.findAllByPartnerIdOrderByNameAsc(partnerEntity.getId())
                 .stream()
-                .map(storeEntity -> StoreDto.from(storeEntity)).collect(Collectors.toList());
+                .map(StoreDto::from).collect(Collectors.toList());
 
         log.info("store list ----> {}", result);
 

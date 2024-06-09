@@ -1,9 +1,3 @@
 spring:
-  application:
-    name: store
   profiles:
     include: common-domain
-
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher

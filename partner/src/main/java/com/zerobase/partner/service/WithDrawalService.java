@@ -23,9 +23,10 @@ public class WithDrawalService {
     public WithDrawalDto deletePartner(Long partnerId, WithDrawalForm withDrawalForm) {
         PartnerEntity partnerEntity = validatePartner(partnerId, withDrawalForm);
 
-        partnerRepository.deleteByIdAndEmail(
-                partnerEntity.getId(), partnerEntity.getEmail()
-        );
+        if (partnerRepository.deleteByIdAndEmail(
+                partnerEntity.getId(), partnerEntity.getEmail()) != 1) {
+            throw new CustomException(ErrorCode.FAIL_TO_WITHDRAWAL);
+        }
 
         return WithDrawalDto.of(
                 partnerEntity.getEmail(), partnerEntity.getName()
@@ -37,8 +38,10 @@ public class WithDrawalService {
         CustomerEntity customerEntity =
                 validateCustomer(customerId, withDrawalForm);
 
-        customerRepository.deleteByIdAndEmail(
-                customerEntity.getId(), customerEntity.getEmail());
+        if (customerRepository.deleteByIdAndEmail(
+                customerEntity.getId(), customerEntity.getEmail()) != 1) {
+            throw new CustomException(ErrorCode.FAIL_TO_WITHDRAWAL);
+        }
 
         return WithDrawalDto.of(
                 customerEntity.getEmail(), customerEntity.getName()

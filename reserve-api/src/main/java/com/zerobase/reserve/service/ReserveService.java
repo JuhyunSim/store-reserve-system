@@ -1,24 +1,31 @@
 package com.zerobase.reserve.service;
 
 import com.zerobase.domain.dto.ReserveResponseDto;
+import com.zerobase.domain.exception.CustomException;
+import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.redis.RedisClient;
 import com.zerobase.domain.redis.Waiting;
 import com.zerobase.domain.repository.CustomerRepository;
 import com.zerobase.domain.requestForm.ReserveRequestForm;
-import com.zerobase.domain.exception.CustomException;
-import com.zerobase.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReserveService {
 
     private final RedisClient redisClient;
     private final CustomerRepository customerRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    private static final String ID_KEY = "waiting_id";
 
     @Transactional
     public ReserveResponseDto addWaiting(ReserveRequestForm reserveRequestForm) {
@@ -30,14 +37,16 @@ public class ReserveService {
 
         //첫 waiting 이라면 고객 추가
         if (waiting == null) {
-            waiting = new Waiting();
-            waiting.getCustomerList().add(waitingCustomer);
+            waiting = Waiting.builder()
+                    .storeId(reserveRequestForm.getStoreId())
+                    .customerList(new ArrayList<>())
+                    .build();
+        } else {
+            validateCustomer(reserveRequestForm.getCustomerId(), waiting);
         }
-
-        validateCustomer(reserveRequestForm.getCustomerId(), waiting);
-
+        waitingCustomer.setId(generateWaitingNum());
         waiting.getCustomerList().add(waitingCustomer);
-
+        log.debug("reserveRequestForm --------> {}", reserveRequestForm.getStoreId());
         redisClient.put(reserveRequestForm.getStoreId(), waiting);
 
         return ReserveResponseDto.from(waitingCustomer);
@@ -48,23 +57,15 @@ public class ReserveService {
             Long storeId, String customerName, String customerPhone
     ) {
         Waiting waiting = redisClient.get(storeId, Waiting.class);
+
         if (waiting == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_STORE);
         }
+        Waiting.Customer waitingCustomer =
+                validateWaitingCustomer(waiting, customerName, customerPhone);
+        redisClient.put(storeId, waiting);
 
-        Optional<Waiting.Customer> waitingCustomer = waiting.getCustomerList()
-                .stream()
-                .filter(customer -> customer.getName().equals(customerName) &&
-                        customer.getPhone().equals(customerPhone))
-                .findFirst();
-        if (waitingCustomer.isPresent()) {
-            waitingCustomer.get().setConfirm(true);
-            redisClient.put(storeId, waiting);
-        } else {
-            throw new CustomException(ErrorCode.NOT_FOUND_BOOK);
-        }
-
-        return ReserveResponseDto.from(waitingCustomer.get());
+        return ReserveResponseDto.from(waitingCustomer);
     }
 
     private void validateCustomer(Long customerId, Waiting waiting) {
@@ -72,12 +73,44 @@ public class ReserveService {
         if(!customerRepository.existsById(customerId)) {
             throw new CustomException(ErrorCode.NOT_FOUND_USER);
         }
-        //이전에 같은 고객이 있는지?(이미 예약한 이력이 있으면 예약 거부)
-        boolean booked = waiting.getCustomerList().stream()
-                .noneMatch(customer -> customer.getId().equals(customerId));
+        //이미 예약한 이력이 있으며 예약 유효시간이 지나지 않았다면 예약 거부
+        boolean booked = waiting.getCustomerList().stream().filter(
+                    customer ->
+                            customer.getExpireTime()
+                                    .isAfter(LocalDateTime.now())
+                )
+                .noneMatch(
+                        customer ->
+                                customer.getCustomerId().equals(customerId)
+                );
 
-        if (booked) {
+        if (!booked) {
             throw new CustomException(ErrorCode.ALREADY_BOOKED_CUSTOMER);
         }
     }
+
+    private Long generateWaitingNum() {
+        return redisTemplate.opsForValue().increment(ID_KEY, 1);
+    }
+
+    private Waiting.Customer validateWaitingCustomer(
+            Waiting waiting, String customerName, String customerPhone
+    ) {
+        //이름, 전화번호 일치 여부 확인
+        Waiting.Customer waitingCustomer = waiting.getCustomerList()
+                .stream()
+                .filter(customer -> customer.getName().equals(customerName) &&
+                        customer.getPhone().equals(customerPhone))
+                .findFirst().orElseThrow(
+                        () -> new CustomException(ErrorCode.NOT_FOUND_RESERVATION)
+                );
+        //유효시간 확인
+        if (waitingCustomer.getExpireTime().isBefore(LocalDateTime.now())) {
+            throw new CustomException(ErrorCode.VALID_TIME_EXPIRED);
+        }
+
+        waitingCustomer.setConfirm(true);
+        return waitingCustomer;
+    }
+
 }

@@ -39,8 +39,8 @@ public class InfoController {
             InvalidKeyException {
 
         return ResponseEntity.ok(partnerService.getPartnerInfo(
-                jwtAuthProvider.getId(token),
-                jwtAuthProvider.getEmail(token)
+                jwtAuthProvider.getUserVo(token).getId(),
+                jwtAuthProvider.getUserVo(token).getEmail()
                 )
         );
     }
@@ -57,8 +57,8 @@ public class InfoController {
             InvalidKeyException {
 
         return ResponseEntity.ok(customerService.getCustomerInfo(
-                        jwtAuthProvider.getId(token),
-                        jwtAuthProvider.getEmail(token)
+                        jwtAuthProvider.getUserVo(token).getId(),
+                        jwtAuthProvider.getUserVo(token).getEmail()
                 )
         );
     }

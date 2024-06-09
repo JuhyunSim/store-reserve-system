@@ -1,8 +1,7 @@
 package com.zerobase.domain.security.config;
 
-import com.zerobase.domain.entity.PartnerEntity;
-import com.zerobase.domain.repository.PartnerRepository;
 import com.zerobase.domain.security.common.UserType;
+import com.zerobase.domain.security.common.UserVo;
 import com.zerobase.domain.security.service.SecurityCustomerService;
 import com.zerobase.domain.security.service.SecurityPartnerService;
 import com.zerobase.domain.security.utils.Aes256Utils;
@@ -41,7 +40,6 @@ public class JwtAuthProvider {
 
     private final SecurityPartnerService securityPartnerService;
     private final SecurityCustomerService securityCustomerService;
-    private final PartnerRepository partnerRepository;
 
     Aes256Utils aes256Utils = new Aes256Utils();
 
@@ -103,10 +101,6 @@ public class JwtAuthProvider {
         UserDetails userDetails = null;
         if (userType == UserType.PARTNER) {
 
-            PartnerEntity partnerEntity = partnerRepository.findById(1L)
-                    .orElseThrow(() -> new RuntimeException("찾을 수 없습니다. "));
-            log.info(userDetails.getUsername());
-
             userDetails =
                     this.securityPartnerService.loadUserByUsername(this.getEmail(jwt).trim());
         } else {
@@ -140,8 +134,21 @@ public class JwtAuthProvider {
             NoSuchAlgorithmException,
             BadPaddingException,
             InvalidKeyException {
+
         return Long.valueOf(aes256Utils.decrypt(
                 this.parseClaims(token).getId()));
+    }
+
+    public UserVo getUserVo(String token)
+            throws InvalidAlgorithmParameterException, NoSuchPaddingException,
+            IllegalBlockSizeException, NoSuchAlgorithmException,
+            BadPaddingException, InvalidKeyException {
+
+        String resolvedToken = token.substring("Bearer ".length());
+        return UserVo.builder()
+                .id(this.getId(resolvedToken))
+                .email(this.getEmail(resolvedToken))
+                .build();
     }
 
 

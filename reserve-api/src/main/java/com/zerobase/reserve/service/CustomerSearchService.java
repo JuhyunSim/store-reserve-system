@@ -6,7 +6,6 @@ import com.zerobase.domain.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.Trie;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +17,6 @@ public class CustomerSearchService {
     private final StoreRepository storeRepository;
     private final Trie trie;
 
-    @Transactional
     public List<StoreDto> searchStore(String keyWord) {
         List<StoreEntity> storeList = storeRepository.findByNameContaining(keyWord);
 
@@ -31,12 +29,10 @@ public class CustomerSearchService {
     }
 
     //auto complete
-    @Transactional
     public void addAutoCompleteKeyword(String keyword) {
         trie.put(keyword, null);
     }
 
-    @Transactional
     public List<String> getAutoCompleteKeywords(String keyword) {
 
         return (List<String>) trie.prefixMap(keyword)
@@ -46,9 +42,7 @@ public class CustomerSearchService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public void deleteAutoCompleteKeywords(String storeName) {
         this.trie.remove(storeName);
     }
-
 }

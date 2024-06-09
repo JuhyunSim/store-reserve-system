@@ -2,6 +2,7 @@ package com.zerobase.reserve.controller;
 
 import com.zerobase.domain.dto.StoreDto;
 import com.zerobase.domain.requestForm.StoreForm;
+import com.zerobase.domain.security.config.JwtAuthProvider;
 import com.zerobase.reserve.service.CustomerSearchService;
 import com.zerobase.reserve.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class PartnerStoreController {
 
     private final StoreService storeService;
     private final CustomerSearchService customerSearchService;
+    private final JwtAuthProvider jwtAuthProvider;
 
     @GetMapping("/store/info")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
@@ -40,12 +42,12 @@ public class PartnerStoreController {
     @PostMapping("/store/add")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
     public ResponseEntity<?> addStore(
-            @RequestParam Long id,
             @RequestBody StoreForm storeForm
     ) throws InvalidAlgorithmParameterException, NoSuchPaddingException,
             IllegalBlockSizeException, NoSuchAlgorithmException,
             BadPaddingException, InvalidKeyException {
-        StoreDto storeDto = storeService.addStore(id, storeForm);
+        StoreDto storeDto =
+                storeService.addStore(storeForm);
         customerSearchService.addAutoCompleteKeyword(storeForm.getStoreName());
         return ResponseEntity.ok(storeDto);
     }

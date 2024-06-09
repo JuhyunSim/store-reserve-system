@@ -1,28 +1,34 @@
 spring:
-  application:
-    name: store
   jwt:
     secret: emVyb2Jhc2Utc3ByaW5nLWJvb3QtcHJvamVjdC1kaXZpZGVuZAo=
 
   jpa:
-    generate-ddl: false
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: update
     properties:
       hibernate:
         ejb:
           interceptor: org.hibernate.envers.event.spi.EnversIntegrator
         dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
     show-sql: true
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: store
       password: store
     url: jdbc:mysql://localhost:3306/store
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+    jpa:
+      repositories:
+        enabled: true
