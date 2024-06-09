@@ -1,4 +1,4 @@
-package com.zerobase.domain.requestForm;
+package com.zerobase.domain.requestForm.review;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

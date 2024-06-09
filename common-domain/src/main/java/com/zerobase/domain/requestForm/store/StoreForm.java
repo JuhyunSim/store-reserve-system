@@ -1,4 +1,4 @@
-package com.zerobase.domain.requestForm;
+package com.zerobase.domain.requestForm.store;
 
 import lombok.*;
 

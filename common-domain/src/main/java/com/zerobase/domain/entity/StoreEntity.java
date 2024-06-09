@@ -1,6 +1,6 @@
 package com.zerobase.domain.entity;
 
-import com.zerobase.domain.requestForm.StoreForm;
+import com.zerobase.domain.requestForm.store.StoreForm;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.AuditOverride;
@@ -21,7 +21,6 @@ public class StoreEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "partner_id")
     private Long partnerId;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -36,6 +35,8 @@ public class StoreEntity extends BaseEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    private boolean reservePossible;
+
     public static StoreEntity of(Long partnerId, StoreForm storeForm) {
         return StoreEntity.builder()
                 .partnerId(partnerId)
@@ -43,6 +44,7 @@ public class StoreEntity extends BaseEntity {
                 .latitude(storeForm.getLatitude())
                 .longitude(storeForm.getLongitude())
                 .description(storeForm.getDescription())
+                .reservePossible(false)
                 .build();
     }
 }

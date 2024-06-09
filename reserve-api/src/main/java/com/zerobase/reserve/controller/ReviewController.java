@@ -1,6 +1,6 @@
 package com.zerobase.reserve.controller;
 
-import com.zerobase.domain.requestForm.ReviewForm;
+import com.zerobase.domain.requestForm.review.ReviewForm;
 import com.zerobase.domain.requestForm.UpdateReviewForm;
 import com.zerobase.domain.security.config.JwtAuthProvider;
 import com.zerobase.reserve.service.ReviewService;

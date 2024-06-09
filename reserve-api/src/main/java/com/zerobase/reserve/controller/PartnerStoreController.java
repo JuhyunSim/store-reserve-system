@@ -1,7 +1,8 @@
 package com.zerobase.reserve.controller;
 
 import com.zerobase.domain.dto.StoreDto;
-import com.zerobase.domain.requestForm.StoreForm;
+import com.zerobase.domain.requestForm.store.StoreForm;
+import com.zerobase.domain.requestForm.store.UpdateStoreForm;
 import com.zerobase.domain.security.config.JwtAuthProvider;
 import com.zerobase.reserve.service.CustomerSearchService;
 import com.zerobase.reserve.service.StoreService;
@@ -29,16 +30,6 @@ public class PartnerStoreController {
     private final CustomerSearchService customerSearchService;
     private final JwtAuthProvider jwtAuthProvider;
 
-    @GetMapping("/store/info")
-    @PreAuthorize("hasRole('ROLE_PARTNER')")
-    //나의 매장 조회하기
-    public ResponseEntity<List<StoreDto>> getStoreInfo(@RequestParam Long id)
-            throws InvalidAlgorithmParameterException,
-            NoSuchPaddingException, IllegalBlockSizeException,
-            NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-        return ResponseEntity.ok(storeService.getStoreInfo(id));
-    }
-
     @PostMapping("/store/add")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
     public ResponseEntity<?> addStore(
@@ -50,5 +41,45 @@ public class PartnerStoreController {
                 storeService.addStore(storeForm);
         customerSearchService.addAutoCompleteKeyword(storeForm.getStoreName());
         return ResponseEntity.ok(storeDto);
+    }
+
+    @GetMapping("/store/info")
+    @PreAuthorize("hasRole('ROLE_PARTNER')")
+    //나의 매장 조회하기
+    public ResponseEntity<List<StoreDto>> getStoreInfo(
+            @RequestHeader(name = "Authorization") String token
+    ) throws InvalidAlgorithmParameterException,
+            NoSuchPaddingException, IllegalBlockSizeException,
+            NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return ResponseEntity.ok(storeService.getStoreInfo(
+                jwtAuthProvider.getUserVo(token).getId()));
+    }
+
+    @PutMapping("/store/update")
+    @PreAuthorize("hasRole('ROLE_PARTNER')")
+    public ResponseEntity<?> updateStore(
+            @RequestHeader(name = "Authorization") String token,
+            @RequestBody UpdateStoreForm updateStoreForm
+    ) throws InvalidAlgorithmParameterException, NoSuchPaddingException,
+            IllegalBlockSizeException, NoSuchAlgorithmException,
+            BadPaddingException, InvalidKeyException {
+        StoreDto storeDto =
+                storeService.updateStore(
+                        jwtAuthProvider.getUserVo(token).getId(), updateStoreForm
+                );
+        return ResponseEntity.ok(storeDto);
+    }
+
+    @GetMapping("/store/delete")
+    @PreAuthorize("hasRole('ROLE_PARTNER')")
+    //나의 매장 조회하기
+    public ResponseEntity<?> deleteStore(
+            @RequestHeader(name = "Authorization") String token,
+            @RequestParam List<Long> storeIds
+    ) throws InvalidAlgorithmParameterException,
+            NoSuchPaddingException, IllegalBlockSizeException,
+            NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return ResponseEntity.ok(storeService.deleteStore(
+                jwtAuthProvider.getUserVo(token).getId(), storeIds));
     }
 }

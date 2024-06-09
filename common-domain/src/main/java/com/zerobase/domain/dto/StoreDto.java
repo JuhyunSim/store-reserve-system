@@ -16,6 +16,7 @@ public class StoreDto {
     private Double latitude;
     private Double longitude;
     private String description;
+    private boolean reservePossible;
 
 
     public static StoreDto from(StoreEntity storeEntity) {
@@ -26,6 +27,7 @@ public class StoreDto {
                 .latitude(storeEntity.getLatitude())
                 .longitude(storeEntity.getLongitude())
                 .description(storeEntity.getDescription())
+                .reservePossible(storeEntity.isReservePossible())
                 .build();
     }
 }
