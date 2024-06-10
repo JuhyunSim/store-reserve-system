@@ -1,5 +1,6 @@
 package com.zerobase.domain.redis;
 
+import com.zerobase.domain.constant.Accepted;
 import com.zerobase.domain.requestForm.ReserveRequestForm;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -18,6 +19,7 @@ import java.util.List;
 public class Waiting {
 
     @Id
+    private Long id;
     private Long storeId;
 
     @Builder.Default
@@ -31,25 +33,28 @@ public class Waiting {
     public static class Customer {
 
         private Long id;
+        private Long reserveId;
+        private String name;
+        private String phone;
         private LocalDateTime createdAt;
         private LocalDateTime expireTime;
         private LocalDateTime reserveTime;
         private Long customerId;
-        private String name;
-        private String phone;
         private boolean confirm;
+        private Accepted accepted;
 
 
         public static Customer from(ReserveRequestForm reserveRequestForm) {
             Waiting.Customer customer = Customer.builder()
-                    .customerId(reserveRequestForm.getCustomerId())
+                    .customerId(-1L)
                     .name(reserveRequestForm.getCustomerName())
                     .phone(reserveRequestForm.getCustomerPhone())
                     .createdAt(LocalDateTime.now())
                     .reserveTime(reserveRequestForm.getReserveTime())
                     .confirm(false)
+                    .accepted(Accepted.WAITING)
                     .build();
-            customer.setExpireTime(customer.reserveTime.minusMinutes(10));
+            customer.setExpireTime(customer.getReserveTime().minusMinutes(10));
             return customer;
         }
     }

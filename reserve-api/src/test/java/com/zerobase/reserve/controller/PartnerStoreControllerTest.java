@@ -168,7 +168,7 @@ public class PartnerStoreControllerTest {
         given(jwtAuthProvider.getUserVo(token)).willReturn(new UserVo(partnerId, "test@test.com"));
         given(storeService.deleteStore(any(Long.class), any(List.class))).willReturn(1);
 
-        mockMvc.perform(get("/partner/store/delete")
+        mockMvc.perform(delete("/partner/store/delete")
                         .header("Authorization", token)
                         .param("storeIds", "1"))
                 .andExpect(status().isOk())

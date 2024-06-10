@@ -28,7 +28,7 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/search/**",
                                         "/search/*",
-                                        "/waiting/confirm",
+                                        "/reserve/confirm",
                                         "/review/read/**",
                                         "/review/read/*").permitAll()
                                 .anyRequest().authenticated()// 인증 없이 접근 허용

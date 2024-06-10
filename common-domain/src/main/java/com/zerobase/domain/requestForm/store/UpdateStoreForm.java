@@ -2,6 +2,8 @@ package com.zerobase.domain.requestForm.store;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -15,4 +17,16 @@ public class UpdateStoreForm {
     private Double longitude;
     private String description;
     private boolean reservePossible;
+    private UpdateStoreDetailForm detailForm;
+
+
+    @Getter
+    @Builder
+    public static class UpdateStoreDetailForm {
+        private String tel;
+        private String address;
+        private String description;
+        private LocalDateTime openTime;
+        private LocalDateTime closeTime;
+    }
 }

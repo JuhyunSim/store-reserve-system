@@ -8,7 +8,7 @@ GET http://localhost:8081/search/search/autocomplete?
 
 ### 대기 예약 추가 (고객)
 ###
-POST http://localhost:8081/waiting/add
+POST http://localhost:8081/reserve/add
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IkNVU1RPTUVSIiwic3ViIjoiQUJnOWxwVjRsYkVGRktRQTUzNWJHZz09LjRYR0xyK3dyOUFIbUZ5K3ExL0RSNXhFZDkwM3lOcENWOFZab3FsOXNGTXM9IiwianRpIjoiQUJnOWxwVjRsYkVGRktRQTUzNWJHZz09Lm1GKzBvOGVCS3RHTnVhdmxKZVNLU2c9PSIsImlhdCI6MTcxNzg5ODMzMiwiZXhwIjoxNzE3OTAxOTMyfQ.vjSLkZKBK43_uyEc52w_Loq4B7nJPJ9trdcYeU5D-s4YDSgrVBZtCQCHwyYLBcgL
 
@@ -22,7 +22,7 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6IkNVU1RPTUVSIiwic3ViIjoiQ
 }
 
 ### 대기 예약 확인 (고객)
-PUT http://localhost:8081/waiting/confirm?
+PUT http://localhost:8081/reserve/confirm?
     storeId=1&
     name=Park&
     phone=010-1111-2222

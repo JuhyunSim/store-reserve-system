@@ -4,6 +4,8 @@ package com.zerobase.domain.dto;
 import com.zerobase.domain.entity.StoreEntity;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -17,6 +19,7 @@ public class StoreDto {
     private Double longitude;
     private String description;
     private boolean reservePossible;
+    private StoreDetailDto storeDetailDto;
 
 
     public static StoreDto from(StoreEntity storeEntity) {
@@ -28,6 +31,34 @@ public class StoreDto {
                 .longitude(storeEntity.getLongitude())
                 .description(storeEntity.getDescription())
                 .reservePossible(storeEntity.isReservePossible())
+                .storeDetailDto(StoreDetailDto.from(storeEntity.getStoreDetail()))
                 .build();
+    }
+
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StoreDetailDto {
+        private Long id;
+
+        private String tel;
+        private String address;
+        private String description;
+        private LocalDateTime openTime;
+        private LocalDateTime closeTime;
+
+        public static StoreDetailDto from(StoreEntity.StoreDetailEntity storeDetailEntity) {
+            return StoreDetailDto.builder()
+                    .id(storeDetailEntity.getId())
+                    .tel(storeDetailEntity.getTel())
+                    .address(storeDetailEntity.getAddress())
+                    .description(storeDetailEntity.getDescription())
+                    .openTime(storeDetailEntity.getOpenTime())
+                    .closeTime(storeDetailEntity.getCloseTime())
+                    .build();
+        }
     }
 }

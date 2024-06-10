@@ -13,8 +13,8 @@ public class ReserveRequestForm {
 
     private Long storeId;
     private Long customerId;
+    private Long partnerId;
     private String customerName;
-    private String customerEmail;
     private String customerPhone;
     private LocalDateTime reserveTime;
 }
