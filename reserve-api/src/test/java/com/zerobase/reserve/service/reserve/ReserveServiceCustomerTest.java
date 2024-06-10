@@ -1,4 +1,4 @@
-package com.zerobase.reserve.service;
+package com.zerobase.reserve.service.reserve;
 
 import com.zerobase.domain.constant.Accepted;
 import com.zerobase.domain.dto.ReserveResponseDto;
@@ -12,6 +12,7 @@ import com.zerobase.domain.repository.CustomerRepository;
 import com.zerobase.domain.repository.ReserveRepository;
 import com.zerobase.domain.repository.StoreRepository;
 import com.zerobase.domain.requestForm.ReserveRequestForm;
+import com.zerobase.reserve.service.ReserveService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

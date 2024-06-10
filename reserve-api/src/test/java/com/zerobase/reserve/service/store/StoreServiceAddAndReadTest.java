@@ -1,4 +1,4 @@
-package com.zerobase.reserve.service;
+package com.zerobase.reserve.service.store;
 
 import com.zerobase.domain.dto.StoreDto;
 import com.zerobase.domain.entity.PartnerEntity;
@@ -8,6 +8,7 @@ import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.repository.PartnerRepository;
 import com.zerobase.domain.repository.StoreRepository;
 import com.zerobase.domain.requestForm.store.StoreForm;
+import com.zerobase.reserve.service.StoreService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

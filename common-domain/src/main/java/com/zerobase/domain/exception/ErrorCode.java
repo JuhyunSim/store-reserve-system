@@ -11,12 +11,16 @@ public enum ErrorCode {
     ALREADY_BOOKED_CUSTOMER(HttpStatus.BAD_REQUEST, "이미 예약한 고객입니다."),
     NOT_FOUND_USER(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
     NOT_FOUND_STORE(HttpStatus.BAD_REQUEST, "존재하지 않는 매장입니다."),
-
+    NOT_VERIFIED(HttpStatus.BAD_REQUEST, "인증되지 않은 아이디입니다."),
     CHECK_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 확인해주세요."),
     FAIL_TO_WITHDRAWAL(HttpStatus.BAD_REQUEST,
             "회원탈퇴가 실패하였습니다. 아이디와 비밀번호를 확인해주세요."),
     NOT_FOUND_RESERVATION(HttpStatus.BAD_REQUEST,
             "입력하신 정보와 일치하는 예약 정보가 없습니다."),
+
+    //search
+    NO_STORE_MATCH(HttpStatus.BAD_REQUEST, "검색어와 일치하는 매장이 없습니다."),
+    INVALID_INPUT(HttpStatus.BAD_REQUEST, "검색어를 입력하세요."),
 
     //reserve
     EXPIRED_RESERVATION(HttpStatus.BAD_REQUEST,

@@ -2,6 +2,8 @@ package com.zerobase.partner.service;
 
 import com.zerobase.domain.entity.CustomerEntity;
 import com.zerobase.domain.entity.PartnerEntity;
+import com.zerobase.domain.exception.CustomException;
+import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.repository.CustomerRepository;
 import com.zerobase.domain.repository.PartnerRepository;
 import com.zerobase.domain.requestForm.SignInForm;
@@ -42,13 +44,12 @@ public class SignInService {
     public CustomerEntity customerFindEmailAndComparePassword(SignInForm signInForm) {
         CustomerEntity customerEntity = customerFindByEmail(signInForm);
         if(!customerEntity.getPassword().equals(signInForm.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.CHECK_PASSWORD);
         }
         if (!customerEntity.isVerify()) {
-            throw new RuntimeException("인증되지 않은 회원입니다.");
+            throw new CustomException(ErrorCode.NOT_VERIFIED);
         }
 
         return customerEntity;
     }
-
 }
