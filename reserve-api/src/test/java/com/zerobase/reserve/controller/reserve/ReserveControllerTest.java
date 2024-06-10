@@ -1,4 +1,4 @@
-package com.zerobase.reserve.controller;
+package com.zerobase.reserve.controller.reserve;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.domain.constant.Accepted;

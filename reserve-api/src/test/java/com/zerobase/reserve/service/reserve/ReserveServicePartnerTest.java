@@ -1,4 +1,4 @@
-package com.zerobase.reserve.service;
+package com.zerobase.reserve.service.reserve;
 
 import com.zerobase.domain.constant.Accepted;
 import com.zerobase.domain.dto.ReserveResponseDto;
@@ -8,6 +8,7 @@ import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.redis.RedisClient;
 import com.zerobase.domain.redis.Waiting;
 import com.zerobase.domain.repository.ReserveRepository;
+import com.zerobase.reserve.service.ReserveService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,10 +16,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.zerobase.reserve.controller;
+package com.zerobase.reserve.controller.store;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.domain.dto.StoreDto;

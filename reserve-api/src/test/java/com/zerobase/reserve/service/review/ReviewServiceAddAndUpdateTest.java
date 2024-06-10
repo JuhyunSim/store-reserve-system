@@ -1,4 +1,4 @@
-package com.zerobase.reserve.service;
+package com.zerobase.reserve.service.review;
 
 import com.zerobase.domain.dto.ReviewDto;
 import com.zerobase.domain.entity.ReviewEntity;
@@ -10,6 +10,7 @@ import com.zerobase.domain.repository.ReserveRepository;
 import com.zerobase.domain.requestForm.review.ReviewForm;
 import com.zerobase.domain.requestForm.UpdateReviewForm;
 import com.zerobase.domain.security.common.UserType;
+import com.zerobase.reserve.service.ReviewService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

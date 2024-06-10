@@ -1,14 +1,14 @@
-package com.zerobase.reserve.controller;
+package com.zerobase.reserve.controller.review;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.domain.security.common.UserType;
 import com.zerobase.domain.security.common.UserVo;
 import com.zerobase.domain.security.config.JwtAuthProvider;
+import com.zerobase.reserve.controller.ReviewController;
 import com.zerobase.reserve.service.ReviewService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,14 +25,11 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest

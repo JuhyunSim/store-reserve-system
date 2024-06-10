@@ -5,6 +5,7 @@ import com.zerobase.domain.entity.StoreEntity;
 import com.zerobase.domain.exception.CustomException;
 import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.repository.StoreRepository;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.Trie;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,11 @@ public class CustomerSearchService {
     private final Trie trie;
 
     public List<StoreDto> searchStore(String keyWord) {
+        isNothingToSearch(keyWord);
         List<StoreEntity> storeList = storeRepository.findByNameContaining(keyWord);
 
         if (storeList.isEmpty()) {
-            throw new RuntimeException("검색어와 일치하는 매장이 없습니다.");
+            throw new CustomException(ErrorCode.NO_STORE_MATCH);
         }
         return storeList.stream()
                 .map(StoreDto::from)
@@ -31,13 +33,14 @@ public class CustomerSearchService {
     }
 
     //auto complete
-    public void addAutoCompleteKeyword(String keyword) {
-        trie.put(keyword, null);
+    public void addAutoCompleteKeyword(String keyWord) {
+        isNothingToSearch(keyWord);
+        trie.put(keyWord, null);
     }
 
-    public List<String> getAutoCompleteKeywords(String keyword) {
-
-        return (List<String>) trie.prefixMap(keyword)
+    public List<String> getAutoCompleteKeywords(String keyWord) {
+        isNothingToSearch(keyWord);
+        return (List<String>) trie.prefixMap(keyWord)
                 .keySet()
                 .stream()
                 .limit(10)
@@ -45,6 +48,7 @@ public class CustomerSearchService {
     }
 
     public void deleteAutoCompleteKeywords(String storeName) {
+        isNothingToSearch(storeName);
         this.trie.remove(storeName);
     }
 
@@ -56,5 +60,11 @@ public class CustomerSearchService {
 
         StoreDto dto = StoreDto.from(storeEntity);
         return dto;
+    }
+
+    private void isNothingToSearch(String keyWord) {
+        if (StringUtils.isBlank(keyWord)) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
     }
 }

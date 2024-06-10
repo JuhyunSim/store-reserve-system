@@ -1,9 +1,10 @@
-package com.zerobase.reserve.service;
+package com.zerobase.reserve.service.review;
 
 import com.zerobase.domain.entity.ReviewEntity;
 import com.zerobase.domain.exception.CustomException;
 import com.zerobase.domain.repository.ReviewRepository;
 import com.zerobase.domain.security.common.UserType;
+import com.zerobase.reserve.service.ReviewService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
