@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,12 +42,20 @@ class StoreServiceAddAndReadTest {
     @Test
     void addStoreSuccessTest() {
         //given
+        StoreForm.StoreDetailForm detailForm = StoreForm.StoreDetailForm.builder()
+                .address("address")
+                .build();
         storeForm = StoreForm.builder()
                 .partnerId(1L)
                 .storeName("Test Store")
                 .description("Test Description")
                 .latitude(0.0)
                 .longitude(0.0)
+                .storeDetailForm(detailForm)
+                .build();
+
+        StoreEntity.StoreDetailEntity storeDetailEntity = StoreEntity.StoreDetailEntity.builder()
+                .address("address")
                 .build();
 
         storeEntity = StoreEntity.builder()
@@ -59,6 +66,7 @@ class StoreServiceAddAndReadTest {
                 .latitude(0.0)
                 .longitude(0.0)
                 .reservePossible(true)
+                .storeDetail(storeDetailEntity)
                 .build();
         given(storeRepository.existsByPartnerIdAndName(
                 anyLong(), any(String.class))).willReturn(false);
@@ -111,6 +119,9 @@ class StoreServiceAddAndReadTest {
     @Test
     void getStoreInfoTest() {
         // given
+        StoreEntity.StoreDetailEntity storeDetailEntity = StoreEntity.StoreDetailEntity.builder()
+                .address("Test Address")
+                .build();
         storeEntity = StoreEntity.builder()
                 .id(1L)
                 .partnerId(1L)
@@ -119,13 +130,15 @@ class StoreServiceAddAndReadTest {
                 .latitude(0.0)
                 .longitude(0.0)
                 .reservePossible(true)
+                .storeDetail(storeDetailEntity)
                 .build();
+
 
         PartnerEntity partnerEntity = PartnerEntity.builder().id(1L).build();
         given(partnerRepository.findById(anyLong()))
                 .willReturn(Optional.of(partnerEntity));
         given(storeRepository.findAllByPartnerIdOrderByNameAsc(anyLong()))
-                .willReturn(Arrays.asList(storeEntity));
+                .willReturn(List.of(storeEntity));
 
         // when
         List<StoreDto> storeDtos = storeService.getStoreInfo(1L);
