@@ -6,6 +6,7 @@ import com.zerobase.domain.exception.CustomException;
 import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.repository.StoreRepository;
 import com.zerobase.domain.requestForm.store.UpdateStoreForm;
+import com.zerobase.reserve.service.CustomerSearchService;
 import com.zerobase.reserve.service.StoreService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 
@@ -30,6 +30,9 @@ class StoreServiceUpdateAndDeleteTest {
     @Mock
     private StoreRepository storeRepository;
 
+    @Mock
+    private CustomerSearchService customerSearchService;
+
     @InjectMocks
     private StoreService storeService;
 
@@ -37,6 +40,10 @@ class StoreServiceUpdateAndDeleteTest {
 
     @BeforeEach
     void setUp() {
+        StoreEntity.StoreDetailEntity storeDetailEntity =
+                StoreEntity.StoreDetailEntity.builder()
+                        .address("address")
+                        .build();
         storeEntity = StoreEntity.builder()
                 .id(1L)
                 .partnerId(1L)
@@ -45,12 +52,17 @@ class StoreServiceUpdateAndDeleteTest {
                 .latitude(0.0)
                 .longitude(0.0)
                 .reservePossible(true)
+                .storeDetail(storeDetailEntity)
                 .build();
     }
 
     @Test
     void updateStoreTest() {
         // given
+        UpdateStoreForm.UpdateStoreDetailForm updateStoreDetailForm =
+                UpdateStoreForm.UpdateStoreDetailForm.builder()
+                        .address("address")
+                        .build();
         UpdateStoreForm updateStoreForm = UpdateStoreForm.builder()
                 .storeId(1L)
                 .partnerId(1L)
@@ -59,7 +71,10 @@ class StoreServiceUpdateAndDeleteTest {
                 .latitude(1.0)
                 .longitude(1.0)
                 .reservePossible(false)
+                .detailForm(updateStoreDetailForm)
                 .build();
+
+
 
         given(storeRepository.findById(anyLong())).willReturn(Optional.of(storeEntity));
         given(storeRepository.save(any(StoreEntity.class))).willReturn(storeEntity);
@@ -100,12 +115,32 @@ class StoreServiceUpdateAndDeleteTest {
 
     @Test
     void deleteStoreTest() {
-        // given
-        given(storeRepository.findById(anyLong())).willReturn(Optional.of(storeEntity));
+        Long partnerId = 1L;
+        StoreEntity storeEntity1 = StoreEntity.builder()
+                .id(1L)
+                .name("Store 1")
+                .partnerId(partnerId)
+                .build();
+        StoreEntity storeEntity2 = StoreEntity.builder()
+                .id(2L)
+                .name("Store 2")
+                .partnerId(partnerId)
+                .build();
+        StoreEntity storeEntity3 = StoreEntity.builder()
+                .id(3L)
+                .name("Store 3")
+                .partnerId(partnerId)
+                .build();
+
+        given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity1));
+        given(storeRepository.findById(2L)).willReturn(Optional.of(storeEntity2));
+        given(storeRepository.findById(3L)).willReturn(Optional.of(storeEntity3));
+
         doNothing().when(storeRepository).delete(any(StoreEntity.class));
+        doNothing().when(customerSearchService).deleteAutoCompleteKeywords(anyString());
 
         // when
-        int count = storeService.deleteStore(1L, Arrays.asList(1L, 2L, 3L));
+        int count = storeService.deleteStore(partnerId, Arrays.asList(1L, 2L, 3L));
 
         // then
         assertEquals(3, count);
