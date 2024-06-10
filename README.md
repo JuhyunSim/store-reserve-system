@@ -45,3 +45,7 @@
 서비스 흐름도
 ---
 ![상점예약 프로그램](/store-reserve-system-diagram.png)
+
+ERD
+---
+![상점예약 프로그램](/store-reserve-system-erd.drawio)
