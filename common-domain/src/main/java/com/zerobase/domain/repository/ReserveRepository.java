@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface ReserveRepository extends JpaRepository<ReserveEntity, Long> {
     List<ReserveEntity> findAllByCustomerId(Long customerId);
+
+    List<ReserveEntity> findAllByPartnerId(Long partnerId);
+
+    List<ReserveEntity> findAllByStoreId(Long storeId);
 }

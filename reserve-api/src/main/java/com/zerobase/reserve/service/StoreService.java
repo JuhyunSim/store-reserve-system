@@ -26,6 +26,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     private final PartnerRepository partnerRepository;
+    private final CustomerSearchService customerSearchService;
     private final Trie trie;
 
     //등록
@@ -71,6 +72,12 @@ public class StoreService {
         storeEntity.setLongitude(updateStoreForm.getLongitude());
         storeEntity.setLatitude(updateStoreForm.getLatitude());
         storeEntity.setReservePossible(updateStoreForm.isReservePossible());
+        //detail수정
+        storeEntity.getStoreDetail().setTel(updateStoreForm.getDetailForm().getTel());
+        storeEntity.getStoreDetail().setAddress(updateStoreForm.getDetailForm().getAddress());
+        storeEntity.getStoreDetail().setDescription(updateStoreForm.getDetailForm().getDescription());
+        storeEntity.getStoreDetail().setOpenTime(updateStoreForm.getDetailForm().getOpenTime());
+        storeEntity.getStoreDetail().setCloseTime(updateStoreForm.getDetailForm().getCloseTime());
         return StoreDto.from(storeRepository.save(storeEntity));
     }
 
@@ -100,11 +107,16 @@ public class StoreService {
 
             try {
                 storeRepository.delete(storeEntity);
+                customerSearchService.deleteAutoCompleteKeywords(
+                        storeEntity.getName()
+                );
             } catch (Exception e) {
                 throw new CustomException(ErrorCode.FAIL_TO_DELETE_STORE);
             }
             count++;
         }
+
+
         return count;
     }
 

@@ -2,6 +2,8 @@ package com.zerobase.reserve.service;
 
 import com.zerobase.domain.dto.StoreDto;
 import com.zerobase.domain.entity.StoreEntity;
+import com.zerobase.domain.exception.CustomException;
+import com.zerobase.domain.exception.ErrorCode;
 import com.zerobase.domain.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.Trie;
@@ -44,5 +46,15 @@ public class CustomerSearchService {
 
     public void deleteAutoCompleteKeywords(String storeName) {
         this.trie.remove(storeName);
+    }
+
+
+    public StoreDto getStoreDetail(Long storeId) {
+        StoreEntity storeEntity = storeRepository.findById(storeId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_STORE)
+        );
+
+        StoreDto dto = StoreDto.from(storeEntity);
+        return dto;
     }
 }

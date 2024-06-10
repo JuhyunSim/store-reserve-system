@@ -19,6 +19,9 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    all {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
 }
 
 repositories {
@@ -41,6 +44,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.springframework.security:spring-security-test'
+
 
     //auto complete
     implementation 'org.apache.commons:commons-collections4:4.5.0-M1'

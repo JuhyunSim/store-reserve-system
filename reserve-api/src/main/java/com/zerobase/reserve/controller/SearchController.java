@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/search")
 @RequiredArgsConstructor
-public class CustomerController {
+public class SearchController {
 
     private final CustomerSearchService customerSearchService;
 
@@ -31,12 +31,8 @@ public class CustomerController {
         return ResponseEntity.ok(keywords);
     }
 
-//    @GetMapping("/details")
-//    public ResponseEntity<?> getDetails(@RequestParam Long partnerId,
-//                                        @RequestParam String name
-//    ) {
-//        return null;
-//    }
-
-
+    @GetMapping("/details")
+    public ResponseEntity<?> getDetails(@RequestParam Long storeId) {
+        return ResponseEntity.ok(customerSearchService.getStoreDetail(storeId));
+    }
 }

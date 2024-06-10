@@ -1,6 +1,7 @@
 package com.zerobase.reserve.controller;
 
 import com.zerobase.domain.dto.StoreDto;
+import com.zerobase.domain.repository.StoreRepository;
 import com.zerobase.domain.requestForm.store.StoreForm;
 import com.zerobase.domain.requestForm.store.UpdateStoreForm;
 import com.zerobase.domain.security.config.JwtAuthProvider;
@@ -29,6 +30,7 @@ public class PartnerStoreController {
     private final StoreService storeService;
     private final CustomerSearchService customerSearchService;
     private final JwtAuthProvider jwtAuthProvider;
+    private final StoreRepository storeRepository;
 
     @PostMapping("/store/add")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
@@ -70,7 +72,7 @@ public class PartnerStoreController {
         return ResponseEntity.ok(storeDto);
     }
 
-    @GetMapping("/store/delete")
+    @DeleteMapping("/store/delete")
     @PreAuthorize("hasRole('ROLE_PARTNER')")
     //나의 매장 조회하기
     public ResponseEntity<?> deleteStore(
@@ -79,6 +81,7 @@ public class PartnerStoreController {
     ) throws InvalidAlgorithmParameterException,
             NoSuchPaddingException, IllegalBlockSizeException,
             NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+
         return ResponseEntity.ok(storeService.deleteStore(
                 jwtAuthProvider.getUserVo(token).getId(), storeIds));
     }
