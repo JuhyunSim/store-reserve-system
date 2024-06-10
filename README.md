@@ -48,4 +48,4 @@
 
 ERD
 ---
-![상점예약 프로그램](./store-reserve-system-erd.drawio)
+![상점예약 프로그램](./store-reserve-system-erd.jpg)
